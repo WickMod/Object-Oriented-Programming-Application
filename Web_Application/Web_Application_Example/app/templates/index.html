@@ -4,25 +4,9 @@
 <div class="topnav">
     <a class="active" href="#home">Home</a>
     {% for c in classes %}
-        <a class="" >{{ c }}</a>
+    <!--Dynamically adds the hyperlink reference to the link-->
+        <a class="" href = "{{ url_for(c) }}">{{ c }}</a>
     {% endfor %}
-  </div>
-  <div>
-      <form action="test_form" method="POST">
-        <div class="form-group">
-            <label for="name here">Username:</label>
-            <input type="text" class="form-control" id="userName"  placeholder="name" name="name">
-          </div>
-      </form>
- 
-      <form action="test_form" method="POST">
-        <div class="form-group">
-            <label for="password here">Password:</label>
-            <input type="password" class="form-control" id="userPassword"  placeholder="password" name="name" required>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
   </div>
 
 {% endblock %}
