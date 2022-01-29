@@ -13,7 +13,11 @@ def test_form():
     #gets the name and password from the POST payload
     name = request.form['name']
     password = request.form['password']
-    return render_template("name.html",name=name, password=password)
+    if validate_password() and validate_username():
+        return render_template("name.html",name=name, password=password)
+    else:
+        # raise an error without changing page
+        pass
 
 #function to redirect to register page
 @app.route('/register')
@@ -24,6 +28,13 @@ def register():
 @app.route('/login')
 def login():
     return render_template("login.html", classes=classes)
+
+def validate_password(name):
+    return True
+
+def validate_username(password):
+    return True
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
