@@ -1,9 +1,0 @@
----
-  version: "3"
-
-  services:
-    testapp:
-      build: .
-      container_name: testapp
-      ports:
-        - "5000:5000"
