@@ -4,18 +4,9 @@
 <div class="topnav">
     <a class="active" href="#home">Home</a>
     {% for c in classes %}
-        <a class="" >{{ c }}</a>
+    <!--Dynamically adds the hyperlink reference to the link-->
+        <a class="" href = "{{ url_for(c) }}">{{ c }}</a>
     {% endfor %}
-  </div>
-  <div>
-      <form action="test_form" method="POST">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name"  placeholder="name" name="name">
-          </div>
-
-          <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
   </div>
 
 {% endblock %}
