@@ -1,0 +1,24 @@
+---
+  version: "3.7"
+
+  services:
+    testapp:
+      build: .
+      container_name: testapp
+      ports:
+        - "5000:5000"
+    
+    postgres:
+      image: debezium/postgres
+      hostname: postgres
+      container_name: postgres
+      ports:
+        - '5432:5432'
+      environment:
+        POSTGRES_USER: postgres-user
+        POSTGRES_PASSWORD: postgres-password
+        POSTGRES_DB: SSUVideoSharing
+      volumes:
+        - ./postgres/custom-config.conf:/etc/postgresql/postgresql.conf
+        - ./postgres/postgress-seed.sql:/docker-entrypoint-initdb.d/inti.sql
+      command: postgres -c config_file=/etc/postgresql/postgresql.conf

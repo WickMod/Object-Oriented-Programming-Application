@@ -1,0 +1,4 @@
+flask
+flask-restx
+python-dotenv
+psycopg2
