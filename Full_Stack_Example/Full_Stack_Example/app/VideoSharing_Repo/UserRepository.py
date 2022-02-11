@@ -26,6 +26,7 @@ class UserRepository:
             newUser = User()
             newUser.UserId = tempUser[0]
             newUser.UserName = tempUser[1]
+            newUser.LastLogin = tempUser[3]
 
             cur.close()
             return newUser
@@ -43,7 +44,7 @@ class UserRepository:
             password="postgres-password")
 
         try:
-            stmt = "INSERT INTO Users(Username) VALUES('"+user.UserName+"');"
+            stmt = "INSERT INTO Users(Username, Pwd, LastLogin) VALUES( '"+user.UserName+"', '"+user.Pwd+"','"+str(user.LastLogin)+"');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

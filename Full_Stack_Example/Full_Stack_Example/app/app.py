@@ -5,6 +5,7 @@ from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
 from VideoSharing_DTO.User import User
+from datetime import datetime
 
 app = Flask(__name__)
 classes = ["login", "register"]
@@ -23,6 +24,9 @@ def index():
 
 @app.route('/test_form', methods=['POST'])
 def test_form():
+    #####
+    # WE SHOULD SPLIT THIS INTO TWO FUNCTIONS ONE FOR LOGIN AND ONE FOR REGISTER
+    #####
     #gets the name and password from the POST payload
     name = request.form['name']
     password = request.form['password']
@@ -36,6 +40,8 @@ def test_form():
         if CredVer.validate_username(name):
             #if no error go to homepage and register user
             user.UserName = name
+            user.Pwd = password
+            user.LastLogin = datetime.now()
             retVal = user_svc.register(user)
             return render_template("name.html",name=name, registered=retVal)
         else:
