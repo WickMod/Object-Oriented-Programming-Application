@@ -1,14 +1,16 @@
 from urllib import request
 from flask import Flask, render_template, request
 
+from VideoSharing_BL.SchoolService import SchoolService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
 from VideoSharing_DTO.User import User
+from VideoSharing_DTO.School import School
 from datetime import datetime
 
 app = Flask(__name__)
-classes = ["login", "register"]
+classes = ["login", "register", "school_register"]
 
 @app.route('/')
 def index():
@@ -22,6 +24,23 @@ def index():
                             app_name=app_settings_svc.app_name(),
                             app_version=app_settings_svc.app_version())
 
+@app.route('/create_school', methods=['POST'])
+def create_school():
+
+    school_name = request.form['schoolName']
+    school_state = request.form['schoolState']
+    school_city = request.form['schoolCity']
+    school_image = request.form['schoolImage']
+
+    school = School()
+    school.SchoolName = school_name
+    school.SchoolState = school_state
+    school.City = school_city
+    school.Picture = school_image
+
+    if SchoolService.register_school(school):
+        return render_template("schoolname.html", schoolName = school_name)
+    
 @app.route('/test_form', methods=['POST'])
 def test_form():
     #####
@@ -68,7 +87,10 @@ def register():
 def login():
     return render_template("login.html", classes=classes)
 
-
+#function to redirect to school register page
+@app.route('/school_register')
+def school_register():
+    return render_template("school_register.html", classes=classes)
 
 
 if __name__ == '__main__':

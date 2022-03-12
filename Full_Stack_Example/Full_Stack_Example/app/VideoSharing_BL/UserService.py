@@ -1,7 +1,6 @@
 from VideoSharing_DTO.User import User
 from VideoSharing_Repo.UserRepository import UserRepository
 
-
 class UserService:
 
     user_repo: UserRepository
