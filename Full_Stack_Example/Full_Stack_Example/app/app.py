@@ -36,14 +36,13 @@ def test_form():
     user = User()
 
 
-    if CredVer.validate_password(name, password):
-        if CredVer.validate_username(name):
+    if CredVer.validate_password(name, password):        
+        user.UserName = name
+        user.Pwd = password
+        user.LastLogin = datetime.now()
+        if user_svc.register(user):
             #if no error go to homepage and register user
-            user.UserName = name
-            user.Pwd = password
-            user.LastLogin = datetime.now()
-            retVal = user_svc.register(user)
-            return render_template("name.html",name=name, registered=retVal)
+            return render_template("name.html",name=name, registered=True)
         else:
             password_error = False
             username_error = True
