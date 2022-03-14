@@ -15,9 +15,9 @@ class SchoolRepository:
             user="postgres-user",
             password="postgres-password")
         
-        school_name:str = School.SchoolName
-        school_state:str = School.SchoolState
-        school_city:str = School.City
+        school_name:str = school.SchoolName
+        school_state:str = school.SchoolState
+        school_city:str = school.City
 
         try:
             stmt = "SELECT SchoolId, SchoolName, SchoolState, City, Picture FROM School WHERE SchoolName = '"+school_name+"' AND SchoolState = '"+school_state+"' AND City = '"+school_city+"';"
@@ -44,7 +44,7 @@ class SchoolRepository:
         finally:
             conn.close()
 
-    def add_school(school: School) -> bool:
+    def add_school(self, school: School) -> bool:
         conn = psycopg2.connect(
             host = "postgres",
             database= "SSUVideoSharing",

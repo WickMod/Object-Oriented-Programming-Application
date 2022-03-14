@@ -27,19 +27,20 @@ def index():
 @app.route('/create_school', methods=['POST'])
 def create_school():
 
-    school_name = request.form['schoolName']
-    school_state = request.form['schoolState']
-    school_city = request.form['schoolCity']
-    school_image = request.form['schoolImage']
+    school_svc = SchoolService()
+    new_school = School()
+    new_school.SchoolName = request.form['schoolName']
+    new_school.SchoolState = request.form['schoolState']
+    new_school.City = request.form['schoolCity']
+    new_school.Picture = request.form['schoolImage']
 
-    school = School()
-    school.SchoolName = school_name
-    school.SchoolState = school_state
-    school.City = school_city
-    school.Picture = school_image
-
-    if SchoolService.register_school(school):
-        return render_template("schoolname.html", schoolName = school_name)
+    if school_svc.register_school(new_school):
+        return render_template("schoolname.html", schoolName = new_school.SchoolName)
+    else:
+        exisiting_school = school_svc.get_school(new_school)
+        if exisiting_school is not None:
+            return render_template("schoolname.html", schoolName = exisiting_school.SchoolName)
+        
     
 @app.route('/test_form', methods=['POST'])
 def test_form():

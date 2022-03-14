@@ -9,7 +9,8 @@ class SchoolService:
         self.school_repo = SchoolRepository()
     
     def get_school(self, school: School):
-        self.school_repo.get_school(school)
+        existing_school = self.school_repo.get_school(school)
+        return existing_school
 
     def school_exists(self, school: School) -> bool:
         school = self.school_repo.get_school(school)
