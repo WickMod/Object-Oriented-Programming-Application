@@ -10,7 +10,7 @@ from VideoSharing_DTO.School import School
 from datetime import datetime
 
 app = Flask(__name__)
-classes = ["login", "register", "school_register"]
+classes = ["login", "register", "create_school"]
 
 @app.route('/')
 def index():
@@ -24,8 +24,8 @@ def index():
                             app_name=app_settings_svc.app_name(),
                             app_version=app_settings_svc.app_version())
 
-@app.route('/create_school', methods=['POST'])
-def create_school():
+@app.route('/create_school_form', methods=['POST'])
+def create_school_form():
 
     school_svc = SchoolService()
     new_school = School()
@@ -60,7 +60,7 @@ def register_form():
         user.LastLogin = datetime.now()
         if user_svc.register(user):
             #if no error go to homepage and register user
-            return render_template("name.html",name=name, registered=True)
+            return render_template("name.html", classes=classes, name=name, registered=True)
         else:
             password_error = False
             username_error = True
@@ -85,19 +85,26 @@ def login_form():
         #gets the name and password from the POST payload
     name = request.form['name']
     password = request.form['password']
+    user = User()
+
+    user.UserName = name
+    user.Pwd = password
+
     user_svc = UserService()
     #choose which error to display
     #must render_template because of route
+    if not user_svc.user_exists(user):
+        return render_template("login.html", classes=classes,
+                password_error=False, username_error=True)
 
     if user_svc.check_username_password_match(name, password):     
         user_svc.update_last_login(name)
-        return render_template("name.html",classes=classes)
+        return render_template("name.html",classes=classes, name=name)
 
     else:
-        password_error = True
-        username_error = False
         # raise an error without changing page
-        return render_template("login.html",name=name)
+        return render_template("login.html", classes=classes,
+                password_error=True, username_error=False)
 
 
 #function to redirect to register page
@@ -113,9 +120,9 @@ def login():
     return render_template("login.html", classes=classes)
 
 #function to redirect to school register page
-@app.route('/school_register')
-def school_register():
-    return render_template("school_register.html", classes=classes)
+@app.route('/create_school')
+def create_school():
+    return render_template("create_school.html", classes=classes)
 
 
 if __name__ == '__main__':

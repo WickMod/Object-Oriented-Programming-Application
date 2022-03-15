@@ -15,7 +15,7 @@ class UserRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT UserId, Username, LastLogin FROM Users WHERE Username = '"+username+"';"
+            stmt = "SELECT UserId, Username, Pwd, LastLogin FROM Users WHERE Username = '"+username+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             user = cur.fetchall()
@@ -26,7 +26,8 @@ class UserRepository:
             newUser = User()
             newUser.UserId = tempUser[0]
             newUser.UserName = tempUser[1]
-            newUser.LastLogin = tempUser[2]
+            newUser.Pwd = tempUser[2]
+            newUser.LastLogin = tempUser[3]
 
             cur.close()
             return newUser

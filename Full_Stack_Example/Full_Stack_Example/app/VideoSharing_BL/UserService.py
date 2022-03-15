@@ -27,16 +27,14 @@ class UserService:
     def check_username_password_match(self, uname: str, pword: str) -> bool:
         cur_user = self.get_user(uname)
         #if not self.user_exists(cur_user):
-        if cur_user is None:
-            # The user does not exists and needs to register
-            return False
-        #if cur_user.Pwd == pword and cur_user.UserName == uname:
-        if cur_user.UserName == uname and cur_user.Pwd == pword:
-            # the entered info matches a stored pair
-            return True
-        else:
-            # the entreed info does not match a stored pair
-            return False
+        if cur_user is not None:
+            #if cur_user.Pwd == pword and cur_user.UserName == uname:
+            if cur_user.UserName == uname and cur_user.Pwd == pword:
+                # the entered info matches a stored pair
+                return True
+            else:
+                # the entreed info does not match a stored pair
+                return False
 
     def update_last_login(self, username: str)-> bool:
         new_time:Timestamp = datetime.now()

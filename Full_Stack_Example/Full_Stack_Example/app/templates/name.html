@@ -3,6 +3,9 @@
 
 <div class="topnav">
     <a class="active" href="/">Home</a>
+    {% for c in classes %}
+        <a class="" href="{{ url_for(c) }}">{{ c }}</a>
+    {% endfor %}
 </div>
 
 <h1>Welcome {{ name }} {{ password }} </h1>

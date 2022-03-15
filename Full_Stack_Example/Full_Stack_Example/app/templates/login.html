@@ -10,10 +10,20 @@
   <div>
       <form action="login_form" method="POST">
         <div class="form-group">
+            {% if username_error %}
+            <div class="alert alert-danger" role="alert">
+                That user does not exist.
+            </div>
+            {% endif %}
             <label for="name here">Username:</label>
             <input type="text" class="form-control" id="userName"  placeholder="name" name="name" required>
         </div>
         <div class="form-group">
+            {% if password_error %}
+            <div class="alert alert-danger" role="alert">
+                The password is incorrect.
+            </div>
+            {% endif %}
             <label for="password here">Password:</label>
             <input type="password" class="form-control" id="userPassword"  placeholder="password" name="password" required>
         </div>
