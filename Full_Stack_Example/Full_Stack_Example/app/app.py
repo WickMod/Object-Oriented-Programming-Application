@@ -42,11 +42,9 @@ def create_school():
             return render_template("schoolname.html", schoolName = exisiting_school.SchoolName)
         
     
-@app.route('/test_form', methods=['POST'])
-def test_form():
-    #####
-    # WE SHOULD SPLIT THIS INTO TWO FUNCTIONS ONE FOR LOGIN AND ONE FOR REGISTER
-    #####
+@app.route('/register_form', methods=['POST'])
+def register_form():
+
     #gets the name and password from the POST payload
     name = request.form['name']
     password = request.form['password']
@@ -74,6 +72,32 @@ def test_form():
         # raise an error without changing page
         return render_template("register.html", classes=classes,password_error=password_error,
                                     username_error=username_error)
+
+@app.route('/login_form', methods=['POST'])
+def login_form():
+    #check if user existst and password and username match
+    #work on login.html
+    #finish this function
+    #update userrepository so that we can update the users last login timestamp
+    #update userservice.py so that it can update the last login
+    #check the login function below
+
+        #gets the name and password from the POST payload
+    name = request.form['name']
+    password = request.form['password']
+    user_svc = UserService()
+    #choose which error to display
+    #must render_template because of route
+
+    if user_svc.check_username_password_match(name, password):     
+        user_svc.update_last_login(name)
+        return render_template("name.html",classes=classes)
+
+    else:
+        password_error = True
+        username_error = False
+        # raise an error without changing page
+        return render_template("login.html",name=name)
 
 
 #function to redirect to register page

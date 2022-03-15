@@ -1,3 +1,4 @@
+
 def validate_username(name):
     return True
 
@@ -26,3 +27,4 @@ def number_in_string(string: str) -> bool:
     if len(number_list) < 1:
         return False
     return True
+

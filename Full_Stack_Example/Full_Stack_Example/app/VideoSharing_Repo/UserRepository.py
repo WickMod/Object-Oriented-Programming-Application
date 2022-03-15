@@ -57,3 +57,26 @@ class UserRepository:
             raise e
         finally:
             conn.close()
+    
+    def update_login_time(self, user: User) -> bool:
+        conn = psycopg2.connect(
+            host="postgres",
+            database="SSUVideoSharing",
+            user="postgres-user",
+            password="postgres-password")
+
+        try:
+            stmt = "UPDATE Users SET LastLogin = '"+str(user.LastLogin)+"' WHERE Username = '"+user.UserName+"';"
+            cur = conn.cursor()
+            cur.execute(stmt)
+            conn.commit()
+            rowcount = cur.rowcount
+
+            cur.close()
+            return rowcount > 0
+
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+
