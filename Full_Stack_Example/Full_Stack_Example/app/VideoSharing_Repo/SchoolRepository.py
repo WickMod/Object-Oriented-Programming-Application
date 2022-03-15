@@ -44,6 +44,28 @@ class SchoolRepository:
         finally:
             conn.close()
 
+    def find_schools(self, search_term: str) -> list:
+        conn = psycopg2.connect(
+            host = "postgres",
+            database= "SSUVideoSharing",
+            user="postgres-user",
+            password="postgres-password")
+        
+        try:
+            stmt = "SELECT * FROM School WHERE SchoolName LIKE '"+search_term+"';"
+            cur = conn.cursor()
+            cur.execute(stmt)
+            conn.commit()
+            rowcount = cur.rowcount
+            
+            cur.close()
+            return [*stmt]
+
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+
     def add_school(self, school: School) -> bool:
         conn = psycopg2.connect(
             host = "postgres",
