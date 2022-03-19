@@ -1,12 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<div class="topnav">
-    <a class="active" href="/">Home</a>
-    {% for c in classes %}
-        <a class="" href="{{ url_for(c) }}">{{ c }}</a>
-    {% endfor %}
-  </div>
+
   <div>
     <!--Moved from initial position in index.html-->
     <!--Problem was both, it was two forms instead of one form and the name parameter was the same for both inputs -->

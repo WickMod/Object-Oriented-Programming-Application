@@ -1,12 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<div class="topnav">
-    <a class="active" href="/">Home</a>
-    {% for c in classes %}
-    <!--Dynamically adds the hyperlink reference to the link-->
-        <a class="" href = "{{ url_for(c) }}">{{ c }}</a>
-    {% endfor %}
-  </div>
 
 {% endblock %}
