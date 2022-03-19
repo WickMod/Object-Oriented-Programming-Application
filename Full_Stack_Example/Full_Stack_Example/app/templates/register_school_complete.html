@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="topnav">
+    <a class="active" href="/">Home</a>
+    {% for c in classes %}
+        <a class="" href="{{ url_for(c) }}">{{ c }}</a>
+    {% endfor %}
+</div>
+
+<h1>You registered to {{ schoolName }} </h1>
+
+
+{% endblock %}

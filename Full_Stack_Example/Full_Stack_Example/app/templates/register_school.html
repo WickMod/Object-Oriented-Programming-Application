@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="topnav">
+    <a class="active" href="/">Home</a>
+    {% for c in classes %}
+        <a class="" href="{{ url_for(c) }}">{{ c }}</a>
+    {% endfor %}
+  </div>
+  <div>
+      <form action="login_form" method="POST">
+        <div class="form-group">
+            {% if username_error %}
+            <div class="alert alert-danger" role="alert">
+                That school does not exist.
+            </div>
+            {% endif %}
+            <label for="school here">School name:</label>
+            <input type="text" class="form-control" id="schoolName"  placeholder="schoolName" name="schoolName" required>
+        </div>
+        <div class="form-group">
+            {% if password_error %}
+            <div class="alert alert-danger" role="alert">
+                The password is incorrect.
+            </div>
+            {% endif %}
+        </div>
+          <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+  </div>
+
+{% endblock %}
