@@ -1,5 +1,6 @@
+from operator import truediv
 from urllib import request
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 
 from VideoSharing_BL.SchoolService import SchoolService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
@@ -10,6 +11,7 @@ from VideoSharing_DTO.School import School
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "abc"
 classes = ["login", "register", "create_school"]
 
 @app.route('/')
@@ -39,8 +41,7 @@ def create_school_form():
     else:
         exisiting_school = school_svc.get_school(new_school)
         if exisiting_school is not None:
-            return render_template("schoolname.html", schoolName = exisiting_school.SchoolName)
-        
+            return render_template("schoolname.html", schoolName = exisiting_school.SchoolName)      
     
 @app.route('/register_form', methods=['POST'])
 def register_form():
@@ -60,6 +61,7 @@ def register_form():
         user.LastLogin = datetime.now()
         if user_svc.register(user):
             #if no error go to homepage and register user
+            session['username'] = name # update session variable to keep track of the current user
             return render_template("name.html", classes=classes, name=name, registered=True)
         else:
             password_error = False
@@ -81,8 +83,7 @@ def login_form():
     #update userrepository so that we can update the users last login timestamp
     #update userservice.py so that it can update the last login
     #check the login function below
-
-        #gets the name and password from the POST payload
+    #gets the name and password from the POST payload
     name = request.form['name']
     password = request.form['password']
     user = User()
@@ -99,6 +100,7 @@ def login_form():
 
     if user_svc.check_username_password_match(name, password):     
         user_svc.update_last_login(name)
+        session['username'] = name #update session variable in order to keep track of user
         return render_template("name.html",classes=classes, name=name)
 
     else:
@@ -106,6 +108,9 @@ def login_form():
         return render_template("login.html", classes=classes,
                 password_error=True, username_error=False)
 
+@app.route('/search_form', methods=['POST'])
+def search_form():
+    return render_template("name.html", name="SUcCESS")
 
 #function to redirect to register page
 @app.route('/register')
@@ -124,6 +129,10 @@ def login():
 def create_school():
     return render_template("create_school.html", classes=classes)
 
+def is_user_logged_in() -> bool:
+    if 'username' in session:
+        return True
+    return False
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
