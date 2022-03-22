@@ -58,7 +58,7 @@ class SchoolRepository:
             conn.commit()
             rowcount = cur.rowcount
             
-            cur.close()
+            cur.close() 
             return [*stmt]
 
         except Exception as e:
