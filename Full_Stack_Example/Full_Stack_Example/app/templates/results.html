@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div>
+    {% for s in schools %}
+        <a href = "{{url_for('school', schoolstate= s.SchoolState, schoolcity= s.City, schoolname= s.SchoolName)}}" >{{ s.SchoolName }}</a>
+    {% endfor %}
+</div>
+{% endblock %}

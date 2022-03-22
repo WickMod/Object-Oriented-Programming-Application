@@ -88,10 +88,20 @@ class SchoolRepository:
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
-            rowcount = cur.rowcount
+            tuple_list = cur.fetchall()
+
+            school_list = []
+            for tp in tuple_list:
+                school = School()
+                school.SchoolId = tp[0]
+                school.SchoolName = tp[1]
+                school.SchoolState = tp[2]
+                school.City = tp[3]
+                school.Picture = tp[4]
+                school_list.append(school)
             
-            cur.close() 
-            return [*stmt]
+            cur.close()
+            return school_list
 
         except Exception as e:
             raise e

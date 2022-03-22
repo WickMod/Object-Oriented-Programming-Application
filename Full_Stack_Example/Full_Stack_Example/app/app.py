@@ -1,6 +1,6 @@
 from operator import truediv
 from urllib import request
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, abort
 
 from VideoSharing_BL.SchoolService import SchoolService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
@@ -9,6 +9,7 @@ from VideoSharing_BL.UserService import UserService
 from VideoSharing_DTO.User import User
 from VideoSharing_DTO.School import School
 from datetime import datetime
+
 
 app = Flask(__name__)
 app.secret_key = "abc"
@@ -110,7 +111,11 @@ def login_form():
 
 @app.route('/search_form', methods=['POST'])
 def search_form():
-    return render_template("name.html", name="SUcCESS")
+    search_term = request.form["searchContent"]
+    school_svc = SchoolService()
+    school_list = school_svc.search_for_schools(search_term)
+    print(school_list)
+    return render_template("results.html", schools=school_list)
 
 #function to redirect to register page
 @app.route('/register')
@@ -133,6 +138,21 @@ def is_user_logged_in() -> bool:
     if 'username' in session:
         return True
     return False
+
+@app.route('/school/<schoolstate>/<schoolcity>/<schoolname>')
+def school(schoolstate, schoolcity, schoolname):
+    school_svc = SchoolService()
+    
+    temp_school = School()
+    temp_school.SchoolState = schoolstate
+    temp_school.City = schoolcity
+    temp_school.SchoolName = schoolname
+
+    _school = school_svc.get_school(temp_school)
+    if _school is None:
+        abort(404)
+    return render_template("schoolname.html", schoolName = _school.SchoolName)      
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

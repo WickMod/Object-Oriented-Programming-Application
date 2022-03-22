@@ -28,3 +28,7 @@ class SchoolService:
         if self.school_exists(school):
             return False
         return self.school_repo.add_school(school)
+
+    def search_for_schools(self, search_term:str) -> list:
+        return self.school_repo.find_schools(search_term)
+        
