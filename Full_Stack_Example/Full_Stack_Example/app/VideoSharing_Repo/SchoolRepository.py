@@ -44,6 +44,38 @@ class SchoolRepository:
         finally:
             conn.close()
 
+    def get_school(self, id: int) -> School:
+        conn = psycopg2.connect(
+            host="postgres",
+            database="SSUVideoSharing",
+            user="postgres-user",
+            password="postgres-password")
+
+        try:
+            stmt = "SELECT SchoolId, SchoolName, SchoolState, City, Picture FROM School WHERE SchoolId = '"+id+"';"
+            cur = conn.cursor()
+            cur.execute(stmt)
+            school = cur.fetchall()
+            if not cur.rowcount > 0:
+                return None
+
+            tempSchool = school[0]
+
+            newSchool = School()
+            newSchool.SchoolId = tempSchool[0]
+            newSchool.SchoolName = tempSchool[1]
+            newSchool.SchoolState = tempSchool[2]
+            newSchool.City = tempSchool[3]
+            newSchool.Picture = tempSchool[4]
+            
+            cur.close()
+            return newSchool
+
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+
     def find_schools(self, search_term: str) -> list:
         conn = psycopg2.connect(
             host = "postgres",
