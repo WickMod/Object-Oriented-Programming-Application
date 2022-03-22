@@ -12,7 +12,7 @@ class SchoolService:
         existing_school = self.school_repo.get_school(school)
         return existing_school
 
-    def get_school(self, id:str) -> School:
+    def get_school_from_id(self, id:int) -> School:
         return self.school_repo.get_school(id)
 
 

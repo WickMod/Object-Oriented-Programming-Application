@@ -4,12 +4,15 @@ import psycopg2
 from VideoSharing_DTO.School import School
 from VideoSharing_DTO.User import User
 from VideoSharing_BL.UserService import UserService
+from VideoSharing_BL.SchoolService import SchoolService
+
 
 
 class USMRepository:
 
     def __init__(self) -> None:
         self.user_svc = UserService()
+        self.school_svc = SchoolService()
 
     def get_users_from_school(self, school: School) -> list:
         #returns a list of DTOs
@@ -22,24 +25,15 @@ class USMRepository:
         school_id:str = school.SchoolId
 
         try:
-            stmt = "SELECT UserID FROM UserSchoolMappingRepository WHERE SchoolID = '"+school_id+"';"
+            stmt = "SELECT UserID FROM UserSchoolMappingRepository WHERE SchoolId = '"+school_id+"';"
             cur = conn.cursor()
             cur.execute(stmt)
-            schools = cur.fetchall() # we need to be able to get a user by user id
+            schools = cur.fetchall()
             if not cur.rowcount > 0:
                 return None
             final_schools = []
             for school in schools:
-
-                tempSchool = school[0]
-
-                newSchool = School()
-                newSchool.SchoolId = tempSchool[0]
-                newSchool.SchoolName = tempSchool[1]
-                newSchool.SchoolState = tempSchool[2]
-                newSchool.City = tempSchool[3]
-                newSchool.Picture = tempSchool[4]
-                final_schools.append(newSchool)
+                final_schools.append(self.school_svc.get_school_from_id(school[0])) #a bit mixed up
             
             cur.close()
             return final_schools
@@ -61,7 +55,7 @@ class USMRepository:
         user_id:str = user.UserId
 
         try:
-            stmt = "SELECT SchoolId FROM School WHERE UserID = '"+user_id+"';"
+            stmt = "SELECT SchoolId FROM UserSchoolMappingRepository WHERE UserId = '"+user_id+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             users = cur.fetchall()
@@ -70,18 +64,10 @@ class USMRepository:
 
             final_users = []
             for user in users:
-                tempUser = users[0]
-
-                newUser = User()
-                newUser.SchoolId = tempUser[0]
-                newUser.SchoolName = tempUser[1]
-                newUser.SchoolState = tempUser[2]
-                newUser.City = tempUser[3]
-                newUser.Picture = tempUser[4]
-                final_users.append(self.user_svc.get_user)
+                final_users.append(self.user_svc.get_user_from_id(user[0]))#the index here is a guess
                 
             cur.close()
-            return newSchool
+            return final_users
 
         except Exception as e:
             raise e
@@ -96,7 +82,7 @@ class USMRepository:
             password="postgres-password")
         
         try:
-            stmt = "INSERT INTO USM(UserID, SchoolID) VALUES( '"+school.SchoolId+"', '"+user.UserId+"');"
+            stmt = "INSERT INTO UserSchoolMappingRepository(SchoolId, UserId) VALUES( '"+school.SchoolId+"', '"+user.UserId+"');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

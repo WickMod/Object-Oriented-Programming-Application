@@ -37,7 +37,7 @@ class UserRepository:
         finally:
             conn.close()
     
-    def get_user(self,id:int) -> User:
+    def get_user_from_id(self,id:int) -> User:
             conn = psycopg2.connect(
                 host="postgres",
                 database="SSUVideoSharing",

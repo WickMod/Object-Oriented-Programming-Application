@@ -13,7 +13,7 @@ class UserService:
     def get_user(self,username: str) -> User:
         return self.user_repo.get_user(username)
 
-    def get_user(self, id: int) -> User:
+    def get_user_from_id(self, id: int) -> User:
         #stub function
         return self.user_repo.get_user(id)
 
