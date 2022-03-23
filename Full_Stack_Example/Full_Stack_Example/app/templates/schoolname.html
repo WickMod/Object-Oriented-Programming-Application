@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<h1>Welcome to the {{ schoolName }} page</h1>
+<h1>{{ school.SchoolName }}</h1>
+<h1>Located at {{ school.City }}, {{ school.SchoolState }}</h1>
+
+<form action="/join_school_form" method = "POST">
+    <input type = "hidden" id = "schoolId" name = "schoolId" value = "{{ school.SchoolId }}"></input>
+    <button type="submit" class = "btn btn-primary">Register +</button>
+</form>
 
 {% endblock %}

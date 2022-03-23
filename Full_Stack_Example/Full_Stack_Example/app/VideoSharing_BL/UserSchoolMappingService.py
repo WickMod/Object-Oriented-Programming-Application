@@ -1,10 +1,11 @@
 from VideoSharing_DTO.School import School
+from VideoSharing_Repo.SchoolRepository import SchoolRepository
 from VideoSharing_DTO.User import User
 from VideoSharing_Repo.UserSchoolMappingRepository import USMRepository
 
-class SchoolService:
+class USMService:
 
-    school_repo: SchoolRepository
+    school_repo = SchoolRepository()
 
     def __init__(self) -> None:
         self.USM_repo = USMRepository()
@@ -18,13 +19,13 @@ class SchoolService:
         return self.USM_repo.get_users_from_school(school)
 
 
-    def pair_exists(self, school: School) -> bool:
-        school = self.school_repo.get_school(school)
-        if school is None:
+    def pair_exists(self, school_id: int, user_id: int) -> bool:
+        pair = self.USM_repo.get_pair(school_id, user_id)
+        if pair is None:
             return False
         return True
     
-    def register_pair(self, school: School) -> bool:
-        if self.school_exists(school):
+    def register_pair(self, school_id: int, user_id: int) -> bool:
+        if self.pair_exists(school_id, user_id):
             return False
-        return self.school_repo.add_school(school)
+        return self.USM_repo.add_pair(school_id, user_id)

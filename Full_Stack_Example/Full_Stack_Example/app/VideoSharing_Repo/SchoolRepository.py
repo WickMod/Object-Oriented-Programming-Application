@@ -44,7 +44,7 @@ class SchoolRepository:
         finally:
             conn.close()
 
-    def get_school(self, id: int) -> School:
+    def get_school_from_id(self, id: int) -> School:
         conn = psycopg2.connect(
             host="postgres",
             database="SSUVideoSharing",
@@ -52,7 +52,7 @@ class SchoolRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT SchoolId, SchoolName, SchoolState, City, Picture FROM School WHERE SchoolId = '"+id+"';"
+            stmt = "SELECT SchoolId, SchoolName, SchoolState, City, Picture FROM School WHERE SchoolId = '"+str(id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             school = cur.fetchall()
@@ -84,7 +84,7 @@ class SchoolRepository:
             password="postgres-password")
         
         try:
-            stmt = "SELECT * FROM School WHERE SchoolName LIKE '"+search_term+"';"
+            stmt = "SELECT * FROM School WHERE SchoolName LIKE '%"+search_term+"%';"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

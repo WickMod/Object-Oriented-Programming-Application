@@ -3,6 +3,7 @@ from urllib import request
 from flask import Flask, render_template, request, session, abort
 
 from VideoSharing_BL.SchoolService import SchoolService
+from VideoSharing_BL.UserSchoolMappingService import USMService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
@@ -38,11 +39,11 @@ def create_school_form():
     new_school.Picture = request.form['schoolImage']
 
     if school_svc.register_school(new_school):
-        return render_template("schoolname.html", schoolName = new_school.SchoolName)
+        return render_template("schoolname.html", school = new_school)
     else:
         exisiting_school = school_svc.get_school(new_school)
         if exisiting_school is not None:
-            return render_template("schoolname.html", schoolName = exisiting_school.SchoolName)      
+            return render_template("schoolname.html", school = exisiting_school)      
     
 @app.route('/register_form', methods=['POST'])
 def register_form():
@@ -75,6 +76,24 @@ def register_form():
         # raise an error without changing page
         return render_template("register.html", classes=classes,password_error=password_error,
                                     username_error=username_error)
+
+@app.route('/join_school_form', methods=['GET', 'POST'])
+def join_school_form():
+    school_svc = SchoolService()
+    user_svc = UserService()
+    usm_svc = USMService()
+
+    if not is_user_logged_in():
+        return render_template("login.html")
+    else:
+        school_id = request.form['schoolId']
+        user_id = user_svc.get_user(session['username']).UserId
+
+        usm_svc.register_pair(school_id, user_id)
+
+        _school = school_svc.get_school_from_id(school_id)
+        return render_template("schoolname.html", school = _school)
+
 
 @app.route('/login_form', methods=['POST'])
 def login_form():
@@ -114,7 +133,6 @@ def search_form():
     search_term = request.form["searchContent"]
     school_svc = SchoolService()
     school_list = school_svc.search_for_schools(search_term)
-    print(school_list)
     return render_template("results.html", schools=school_list)
 
 #function to redirect to register page
@@ -151,7 +169,7 @@ def school(schoolstate, schoolcity, schoolname):
     _school = school_svc.get_school(temp_school)
     if _school is None:
         abort(404)
-    return render_template("schoolname.html", schoolName = _school.SchoolName)      
+    return render_template("schoolname.html", school = _school)      
     
 
 if __name__ == '__main__':

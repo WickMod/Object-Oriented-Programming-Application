@@ -13,7 +13,7 @@ class SchoolService:
         return existing_school
 
     def get_school_from_id(self, id:int) -> School:
-        return self.school_repo.get_school(id)
+        return self.school_repo.get_school_from_id(id)
 
 
     def school_exists(self, school: School) -> bool:
