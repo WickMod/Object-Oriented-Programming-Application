@@ -3,18 +3,20 @@ from urllib import request
 from flask import Flask, render_template, request, session, abort
 
 from VideoSharing_BL.SchoolService import SchoolService
+from VideoSharing_BL.ClassService import ClassService
 from VideoSharing_BL.UserSchoolMappingService import USMService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
 from VideoSharing_DTO.User import User
 from VideoSharing_DTO.School import School
+from VideoSharing_DTO.Class import Class
 from datetime import datetime
 
 
 app = Flask(__name__)
 app.secret_key = "abc"
-classes = ["login", "register", "create_school"]
+classes = ["login", "register", "create_school", "create_class"]
 
 @app.route('/')
 def index():
@@ -45,6 +47,26 @@ def create_school_form():
         if exisiting_school is not None:
             return render_template("schoolname.html", school = exisiting_school)      
     
+@app.route('/create_class_form', methods=['POST'])
+def create_class_form():
+
+    class_svc = ClassService()
+    new_class = Class()
+    new_class.ClassId = request.form['classId']
+    new_class.ClassName = request.form['className']
+    new_class.ClassCode = request.form['classCode']
+    new_class.Section = request.form['section']
+    new_class.Semester = request.form['semester']
+    new_class.Teacher = request.form['teacher']
+    new_class.SchoolId = request.form['schoolId']
+
+    if class_svc.register_class(new_class):
+        return render_template("classname.html", cl4ss = new_class)
+    else:
+        exisiting_class = class_svc.get_class(new_class)
+        if exisiting_class is not None:
+            return render_template("classname.html", cl4ss = exisiting_class)    
+
 @app.route('/register_form', methods=['POST'])
 def register_form():
 
@@ -151,6 +173,11 @@ def login():
 @app.route('/create_school')
 def create_school():
     return render_template("create_school.html", classes=classes)
+
+#function to redirect to class register page
+@app.route('/create_class')
+def create_class():
+    return render_template("create_class.html", classes=classes)
 
 def is_user_logged_in() -> bool:
     if 'username' in session:

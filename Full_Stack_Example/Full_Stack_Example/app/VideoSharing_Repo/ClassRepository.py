@@ -1,3 +1,4 @@
+from tkinter import E
 from VideoSharing_DTO.Class import Class
 import psycopg2
 
