@@ -1,4 +1,5 @@
 from operator import truediv
+from re import L, search
 from urllib import request
 from flask import Flask, render_template, request, session, abort
 
@@ -61,11 +62,11 @@ def create_class_form():
     new_class.SchoolId = request.form['schoolId']
 
     if class_svc.register_class(new_class):
-        return render_template("classname.html", cl4ss = new_class)
+        return render_template("classname.html", _class = new_class)
     else:
         exisiting_class = class_svc.get_class(new_class)
         if exisiting_class is not None:
-            return render_template("classname.html", cl4ss = exisiting_class)    
+            return render_template("classname.html", _class = exisiting_class)    
 
 @app.route('/register_form', methods=['POST'])
 def register_form():
@@ -150,12 +151,21 @@ def login_form():
         return render_template("login.html", classes=classes,
                 password_error=True, username_error=False)
 
-@app.route('/search_form', methods=['POST'])
-def search_form():
+@app.route('/search_school_form', methods=['POST'])
+def search_school_form():
     search_term = request.form["searchContent"]
     school_svc = SchoolService()
     school_list = school_svc.search_for_schools(search_term)
     return render_template("results.html", schools=school_list)
+
+@app.route('/search_class_form', methods=['POST'])
+def search_class_form():
+    search_term = request.form["searchContent"]
+    _school = request.form["school"]
+    class_svc = ClassService()
+    class_list = class_svc.search_for_classes(search_term)
+    return render_template("schoolname.html", school = _school, classes = class_list)
+
 
 #function to redirect to register page
 @app.route('/register')
@@ -185,7 +195,7 @@ def is_user_logged_in() -> bool:
     return False
 
 @app.route('/school/<schoolstate>/<schoolcity>/<schoolname>')
-def school(schoolstate, schoolcity, schoolname):
+def school(schoolstate:str, schoolcity:str, schoolname:str):
     school_svc = SchoolService()
     
     temp_school = School()
@@ -196,7 +206,7 @@ def school(schoolstate, schoolcity, schoolname):
     _school = school_svc.get_school(temp_school)
     if _school is None:
         abort(404)
-    return render_template("schoolname.html", school = _school)      
+    return render_template("schoolname.html", school = _school)
     
 
 if __name__ == '__main__':

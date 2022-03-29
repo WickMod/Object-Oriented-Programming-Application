@@ -23,8 +23,6 @@ class SchoolService:
         return True
     
     def register_school(self, school: School) -> bool:
-        # TODO:: Add user that created school to school when school is successfully created.
-        # To comply with Single Responsibility Principle this should be called in app.py
         if self.school_exists(school):
             return False
         return self.school_repo.add_school(school)

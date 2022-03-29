@@ -3,7 +3,7 @@ from VideoSharing_DTO.School import School
 from VideoSharing_Repo.ClassRepository import ClassRepository
 from VideoSharing_BL.SchoolService import SchoolService
 
-#class variables are named cl4ss by necessity of syntax
+#class variables are named _class by necessity of syntax
 
 #To do
 #->add a way to add the class and school id
@@ -15,21 +15,21 @@ class ClassService:
     school_svc: SchoolService
     class_repo: ClassRepository
 
-    def register_class(self, cl4ss: Class) -> bool:
-        if self.class_exists(cl4ss):
+    def register_class(self, _class: Class) -> bool:
+        if self.class_exists(_class):
             return False
-        return self.class_repo.add_class(cl4ss)
+        return self.class_repo.add_class(_class)
 
-    def class_exists(self, cl4ss: Class) -> bool:
-        cl4ss = self.class_repo.get_class(cl4ss)
-        if cl4ss is None:
+    def class_exists(self, _class: Class) -> bool:
+        _class = self.class_repo.get_class(_class)
+        if _class is None:
             return False
         return True
         
-    def get_class(self, cl4ss: Class) -> Class:
+    def get_class(self, _class: Class) -> Class:
         #honestly idk what this does it looks like it just takes a class and returns it,
         #but schoolservice.py had one so I made it
-        existing_class = self.class_repo.get_class(cl4ss)
+        existing_class = self.class_repo.get_class(_class)
         return existing_class
 
     def get_school_from_class_id(self, class_id: int) -> School:

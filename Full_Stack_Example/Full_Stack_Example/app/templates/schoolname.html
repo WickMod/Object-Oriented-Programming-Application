@@ -12,7 +12,9 @@
     </div>
     <div>
         <h1>Hello</h1>
-        <!--Class stuff goes here-->
+        {% for c in classes %}
+            <p>{{c.ClassName}}</p>
+        {% endfor %}
     </div>    
 </div>
 
