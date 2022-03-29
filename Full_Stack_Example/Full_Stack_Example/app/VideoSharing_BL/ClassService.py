@@ -1,3 +1,4 @@
+from VideoSharing_Repo.ClassRepository import ClassRepository
 from VideoSharing_DTO.Class import Class
 from VideoSharing_DTO.School import School
 from VideoSharing_Repo.ClassRepository import ClassRepository
@@ -14,6 +15,10 @@ class ClassService:
 
     school_svc: SchoolService
     class_repo: ClassRepository
+
+    def __init__(self) -> None:
+        self.class_repo = SchoolRepository()
+        self.school_svc = SchoolService()
 
     def register_class(self, _class: Class) -> bool:
         if self.class_exists(_class):
@@ -35,7 +40,7 @@ class ClassService:
     def get_school_from_class_id(self, class_id: int) -> School:
         #stub function 
         # not sure why the squiggle 
-        return school_svc.get_school_from_id(class_id)
+        return self.school_svc.get_school_from_id(class_id)
 
     def search_for_classes(self, search_term:str) -> list:
         return self.class_repo.find_classes(search_term)
