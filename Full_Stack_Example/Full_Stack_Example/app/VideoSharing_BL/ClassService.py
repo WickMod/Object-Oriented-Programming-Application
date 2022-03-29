@@ -42,5 +42,5 @@ class ClassService:
         # not sure why the squiggle 
         return self.school_svc.get_school_from_id(class_id)
 
-    def search_for_classes(self, search_term:str) -> list:
-        return self.class_repo.find_classes(search_term)
+    def search_for_classes(self, search_term:str, school_id:int) -> list:
+        return self.class_repo.find_classes(search_term, school_id)
