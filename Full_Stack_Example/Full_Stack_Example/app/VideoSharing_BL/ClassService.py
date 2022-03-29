@@ -17,7 +17,7 @@ class ClassService:
     class_repo: ClassRepository
 
     def __init__(self) -> None:
-        self.class_repo = SchoolRepository()
+        self.class_repo = ClassRepository()
         self.school_svc = SchoolService()
 
     def register_class(self, _class: Class) -> bool:
