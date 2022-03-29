@@ -45,7 +45,7 @@ class ClassRepository:
             host="postgres",
             database="SSUVideoSharing",
             user="postgres-user",
-            password="postgres-passwords")
+            password="postgres-password")
         
         class_name:str = _class.ClassName
         class_code:str = _class.ClassCode
