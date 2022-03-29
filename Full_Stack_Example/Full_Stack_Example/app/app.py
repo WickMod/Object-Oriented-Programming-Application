@@ -53,12 +53,11 @@ def create_class_form():
 
     class_svc = ClassService()
     new_class = Class()
-    new_class.ClassId = request.form['classId']
     new_class.ClassName = request.form['className']
     new_class.ClassCode = request.form['classCode']
-    new_class.Section = request.form['section']
-    new_class.Semester = request.form['semester']
-    new_class.Teacher = request.form['teacher']
+    new_class.Section = request.form['Section']
+    new_class.Semester = request.form['Semester']
+    new_class.Teacher = request.form['Teacher']
     new_class.SchoolId = request.form['schoolId']
 
     if class_svc.register_class(new_class):
