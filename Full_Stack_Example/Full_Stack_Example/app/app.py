@@ -161,7 +161,7 @@ def search_school_form():
 @app.route('/search_class_form', methods=['POST'])
 def search_class_form():
     search_term = request.form["searchContent"]
-    _school = request.form["school"]
+    _school = request.form["schoolId"]
     class_svc = ClassService()
     class_list = class_svc.search_for_classes(search_term)
     return render_template("schoolname.html", school = _school, classes = class_list)

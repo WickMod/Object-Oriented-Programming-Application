@@ -11,6 +11,14 @@
         </form>    
     </div>
     <div>
+        <form action = "/search_class_form" method = "POST">
+            <input type="text" id="searchContent" placeholder="Search for classes..." name = "searchContent" required>
+            <input type = "hidden" id = "schoolId" name = "schoolId" value = "{{ school.schoolId }}"></input>
+            <button type = "submit">
+                Search
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
         <h1>Hello</h1>
         {% for c in classes %}
             <p>{{c.ClassName}}</p>
