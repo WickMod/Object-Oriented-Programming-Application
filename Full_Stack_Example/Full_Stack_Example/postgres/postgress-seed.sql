@@ -9,5 +9,5 @@ CREATE TABLE Users(UserId SERIAL PRIMARY KEY, Username TEXT, pwd TEXT, LastLogin
 INSERT INTO ApplicationSettings(app_key,app_value) VALUES ('ApplicationName', 'SSU Video Sharing');
 INSERT INTO ApplicationSettings(app_key,app_value) VALUES ('ApplicationVersion', '1.0.0');
 
-INSERT INTO Users(UserId, Username, pwd, LastLogin) VALUES (1, 'Username', 'password11', now());
-INSERT INTO School(SchoolId, SchoolName, SchoolState, City, Picture) VALUES (1, 'Shawnee State University', 'Ohio', 'Portsmouth', 'Picture');
+INSERT INTO Users(Username, pwd, LastLogin) VALUES ('Username', 'password11', now());
+INSERT INTO School(SchoolName, SchoolState, City, Picture) VALUES ('Shawnee State University', 'Ohio', 'Portsmouth', 'Picture');

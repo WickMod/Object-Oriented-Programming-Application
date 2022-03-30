@@ -10,14 +10,14 @@
             <button type="submit" class = "btn btn-primary">Register +</button>
         </form>
         <form action="http://localhost:5000/create_class_form" method="POST">
-            <input type = "hidden" id = "schoolId" name = "schoolId" value = "{{ school.SchoolId }}"></input>
+            <input type = "hidden" id = "SchoolId" name = "SchoolId" value = "{{ school.SchoolId }}"></input>
             <div class="form-group">
                 <label for="class name here">Class Name:</label>
-                <input type="text" class="form-control" id="className"  placeholder="className" name="className" required>
+                <input type="text" class="form-control" id="ClassName"  placeholder="ClassName" name="ClassName" required>
             </div>
             <div class="form-group">
                 <label for="class code here">Class Code:</label>
-                <input type="text" class="form-control" id="classCode"  placeholder="classCode" name="classCode" required>
+                <input type="text" class="form-control" id="ClassCode"  placeholder="ClassCode" name="ClassCode" required>
             </div>
             <div class="form-group">
                 <label for="section here">Class Section:</label>
@@ -45,7 +45,7 @@
         </form>
         <h1>Hello</h1>
         {% for c in classes %}
-            <p>{{c.ClassName}}</p>
+            <p>{{c.ClassName}} {{c.Semester}}</p>
             <form action="/join_class_form" method = "POST">
                 <input type = "hidden" id = "schoolId" name = "schoolId" value = "{{ school.SchoolId }}"></input>
                 <button type="submit" class = "btn btn-primary">Join Class</button>
