@@ -15,7 +15,7 @@ class ClassRepository:
             password="postgres-passwords")
 
         try:
-            stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId FROM Classes WHERE ClassId = '"+id+"';"
+            stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassId = '"+id+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             _class = cur.fetchall()
@@ -31,6 +31,7 @@ class ClassRepository:
             new_class.Semester = temp_class[4]
             new_class.Teacher = temp_class[5]
             new_class.SchoolId = temp_class[6]
+            new_class.ClassYear = temp_class[7]
 
             cur.close()
             return new_class
@@ -52,9 +53,10 @@ class ClassRepository:
         class_section:str = _class.Section
         class_semester:str = _class.Semester
         class_teacher:str = _class.Teacher
+        class_year:str = _class.ClassYear
 
         try:
-            stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId FROM Classes WHERE ClassName = '"+class_name+"' AND ClassCode = '"+class_code+"' AND Section = '"+class_section+"' AND Semester = '"+class_semester+"' AND Teacher = '"+class_teacher+"';"
+            stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassName = '"+class_name+"' AND ClassCode = '"+class_code+"' AND Section = '"+class_section+"' AND Semester = '"+class_semester+"' AND Teacher = '"+class_teacher+"' AND ClassYear = '"+class_year+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             _class = cur.fetchall()
@@ -70,6 +72,7 @@ class ClassRepository:
             new_class.Semester = temp_class[4]
             new_class.Teacher = temp_class[5]
             new_class.SchoolId = temp_class[6]
+            new_class.ClassYear = temp_class[7]
 
             cur.close()
             return new_class
@@ -121,7 +124,7 @@ class ClassRepository:
              password="postgres-password")
         
         try:
-            stmt = "INSERT INTO Classes(ClassName, ClassCode, Section, Semester, Teacher, SchoolId) VALUES('"+_class.ClassName+"', '"+_class.ClassCode+"', '"+_class.Section+"', '"+_class.Semester+"', '"+_class.Teacher+"', '"+_class.SchoolId+"');"
+            stmt = "INSERT INTO Classes(ClassName, ClassCode, Section, Semester, Teacher, SchoolId, SchoolYear) VALUES('"+_class.ClassName+"', '"+_class.ClassCode+"', '"+_class.Section+"', '"+_class.Semester+"', '"+_class.Teacher+"', '"+_class.SchoolId+", '"+_class.ClassYear+"'');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

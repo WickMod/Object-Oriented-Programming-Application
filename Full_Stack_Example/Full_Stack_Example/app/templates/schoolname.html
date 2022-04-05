@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<div style = "display: flex; flex-direction: row;">
+<div style = "display: flex; flex-direction: row; justify-content: space-evenly;">
     <div>
         <h1>{{ school.SchoolName }}</h1>
         <h1>Located at {{ school.City }}, {{ school.SchoolState }}</h1>
@@ -9,6 +9,8 @@
             <input type = "hidden" id = "schoolId" name = "schoolId" value = "{{ school.SchoolId }}"></input>
             <button type="submit" class = "btn btn-primary">Register +</button>
         </form>
+    </div>
+    <div>
         <form action="http://localhost:5000/create_class_form" method="POST">
             <input type = "hidden" id = "SchoolId" name = "SchoolId" value = "{{ school.SchoolId }}"></input>
             <div class="form-group">
@@ -21,15 +23,17 @@
             </div>
             <div class="form-group">
                 <label for="section here">Class Section:</label>
-                <input type="text" class="form-control" id="Section"  placeholder="Section" name="Section">
+                <input type="text" class="form-control" id="Section"  placeholder="Section" name="Section" required>
             </div>
             <div class="form-group">
                 <label for="semester here">Class Semester:</label>
-                <input type="text" class="form-control" id="Semester"  placeholder="Semester" name="Semester">
+                <option value = "Spring"></option>
+                <option value = "Spring"></option>
+                <option value = "Fall"></option>
             </div>
             <div class="form-group">
                 <label for="teacher here">Class Teacher:</label>
-                <input type="text" class="form-control" id="Teacher"  placeholder="Teacher" name="Teacher">
+                <input type="text" class="form-control" id="Teacher"  placeholder="Teacher" name="Teacher" required>
             </div>
               <button type="submit" class="btn btn-primary">Create</button>
           </form>
