@@ -124,7 +124,7 @@ class ClassRepository:
              password="postgres-password")
         
         try:
-            stmt = "INSERT INTO Classes(ClassName, ClassCode, Section, Semester, Teacher, SchoolId, SchoolYear) VALUES('"+_class.ClassName+"', '"+_class.ClassCode+"', '"+_class.Section+"', '"+_class.Semester+"', '"+_class.Teacher+"', '"+_class.SchoolId+", '"+_class.ClassYear+"'');"
+            stmt = "INSERT INTO Classes(ClassName, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear) VALUES('"+_class.ClassName+"', '"+_class.ClassCode+"', '"+_class.Section+"', '"+_class.Semester+"', '"+_class.Teacher+"', '"+_class.SchoolId+"', '"+_class.ClassYear+"');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

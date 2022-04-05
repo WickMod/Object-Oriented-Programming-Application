@@ -2,6 +2,8 @@
 {% block body %}
 
 <h1>{{ _class.ClassName }}</h1>
+<h1>{{ _class.Semester }}</h1>
+<h1>{{ _class.ClassYear }}</h1>
 
 <form action="/join_class_form" method = "POST">
     <input type = "hidden" id = "classId" name = "classId" value = "{{ _class.ClassId }}"></input>

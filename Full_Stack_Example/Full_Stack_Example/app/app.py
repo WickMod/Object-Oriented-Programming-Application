@@ -59,6 +59,7 @@ def create_class_form():
     new_class.Semester = request.form['Semester']
     new_class.Teacher = request.form['Teacher']
     new_class.SchoolId = request.form['SchoolId']
+    new_class.ClassYear = request.form['ClassYear']
 
     if class_svc.register_class(new_class):
         return render_template("classname.html", _class = new_class)
