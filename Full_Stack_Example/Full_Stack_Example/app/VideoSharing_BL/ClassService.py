@@ -30,6 +30,9 @@ class ClassService:
         if _class is None:
             return False
         return True
+
+    def get_class_from_id(self, class_id: int) -> Class:
+        return self.class_repo.get_class_from_class_id(class_id)
         
     def get_class(self, _class: Class) -> Class:
         #honestly idk what this does it looks like it just takes a class and returns it,

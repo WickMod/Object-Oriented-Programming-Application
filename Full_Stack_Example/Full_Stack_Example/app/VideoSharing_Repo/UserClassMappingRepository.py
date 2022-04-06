@@ -1,19 +1,19 @@
 from tkinter import E
 import psycopg2
-from VideoSharing_DTO.School import School
+from VideoSharing_DTO.Class import Class
 from VideoSharing_DTO.User import User
 from VideoSharing_BL.UserService import UserService
-from VideoSharing_BL.SchoolService import SchoolService
+from VideoSharing_BL.ClassService import ClassService
 
 
 
-class USMRepository:
+class UCMRepository:
 
     def __init__(self) -> None:
         self.user_svc = UserService()
-        self.school_svc = SchoolService()
+        self.class_svc = ClassService()
 
-    def get_schools_from_user(self, user_id: int) -> list:
+    def get_classes_from_user(self, user_id: int) -> list:
         #returns a list of DTOs
         conn = psycopg2.connect(
             host="postgres",
@@ -22,25 +22,25 @@ class USMRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT UserId FROM UserSchoolMapping WHERE SchoolId = '"+str(user_id)+"';"
+            stmt = "SELECT ClassId FROM UserClassMapping WHERE UserId = '"+str(user_id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
-            schools = cur.fetchall()
+            classes = cur.fetchall()
             if not cur.rowcount > 0:
                 return None
-            final_schools = []
-            for school in schools:
-                final_schools.append(self.school_svc.get_school_from_id(school[0])) 
+            final_class = []
+            for _class in classes:
+                final_class.append(self.class_svc.get_class_from_id(_class[0])) 
             
             cur.close()
-            return final_schools
+            return final_class
 
         except Exception as e:
             raise e
         finally:
             conn.close()
 
-    def get_users_from_school(self, school_id: int) -> list:
+    def get_users_from_class(self, class_id: int) -> list:
         #returns a list of DTOs
         conn = psycopg2.connect(
             host="postgres",
@@ -48,8 +48,9 @@ class USMRepository:
             user="postgres-user",
             password="postgres-password")
         
+
         try:
-            stmt = "SELECT UserId FROM UserSchoolMapping WHERE SchoolId = '"+str(school_id)+"';"
+            stmt = "SELECT UserId FROM UserClassMapping WHERE ClassId = '"+str(class_id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             users = cur.fetchall()
@@ -58,7 +59,7 @@ class USMRepository:
 
             final_users = []
             for user in users:
-                final_users.append(self.user_svc.get_user_from_id(user[0]))
+                final_users.append(self.user_svc.get_user_from_id(user[0]))#the index here is a guess
                 
             cur.close()
             return final_users
@@ -68,7 +69,7 @@ class USMRepository:
         finally:
             conn.close()
 
-    def get_pair(self, school_id: int, user_id:int) -> tuple:
+    def get_pair(self, class_id: int, user_id:int) -> tuple:
         conn = psycopg2.connect(
             host = "postgres",
             database= "SSUVideoSharing",
@@ -76,7 +77,7 @@ class USMRepository:
             password= "postgres-password")
 
         try:
-            stmt = "SELECT SchoolId, UserId FROM UserSchoolMapping WHERE SchoolId = '"+str(school_id)+"' AND UserId = '"+str(user_id)+"';"
+            stmt = "SELECT ClassId, UserId FROM UserClassMapping WHERE ClassId = '"+str(class_id)+"' AND UserId = '"+str(user_id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             pair = cur.fetchall()
@@ -91,7 +92,7 @@ class USMRepository:
         finally:
             conn.close()
 
-    def add_pair(self, school_id: int, user_id: int) -> bool:
+    def add_pair(self, class_id: int, user_id: int) -> bool:
         conn = psycopg2.connect(
             host = "postgres",
             database= "SSUVideoSharing",
@@ -99,7 +100,7 @@ class USMRepository:
             password="postgres-password")
         
         try:
-            stmt = "INSERT INTO UserSchoolMapping(SchoolId, UserId) VALUES( '"+str(school_id)+"', '"+str(user_id)+"');"
+            stmt = "INSERT INTO UserClassMapping(ClassId, UserId) VALUES( '"+str(class_id)+"', '"+str(user_id)+"');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

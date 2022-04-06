@@ -6,6 +6,7 @@ from flask import Flask, render_template, request, session, abort
 from VideoSharing_BL.SchoolService import SchoolService
 from VideoSharing_BL.ClassService import ClassService
 from VideoSharing_BL.UserSchoolMappingService import USMService
+from VideoSharing_BL.UserClassMappingService import UCMService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
@@ -42,7 +43,8 @@ def create_school_form():
     new_school.Picture = request.form['schoolImage']
 
     if school_svc.register_school(new_school):
-        return render_template("schoolname.html", school = new_school)
+        _school = school_svc.get_school(new_school)
+        return render_template("schoolname.html", school = _school)
     else:
         exisiting_school = school_svc.get_school(new_school)
         if exisiting_school is not None:
@@ -62,7 +64,8 @@ def create_class_form():
     new_class.ClassYear = request.form['ClassYear']
 
     if class_svc.register_class(new_class):
-        return render_template("classname.html", _class = new_class)
+        _class = class_svc.get_class(new_class)
+        return render_template("classname.html", _class = _class)
     else:
         exisiting_class = class_svc.get_class(new_class)
         if exisiting_class is not None:
@@ -117,6 +120,22 @@ def join_school_form():
         _school = school_svc.get_school_from_id(school_id)
         return render_template("schoolname.html", school = _school)
 
+@app.route('/join_class_form', methods=['GET', 'POST'])
+def join_class_form():
+    class_svc = ClassService()
+    user_svc = UserService()
+    ucm_svc = UCMService()
+
+    if not is_user_logged_in():
+        return render_template("login.html")
+    else:
+        class_id = request.form['classId']
+        user_id = user_svc.get_user(session['username']).UserId
+
+        ucm_svc.register_pair(class_id, user_id)
+
+        __class = class_svc.get_class_from_id(class_id)
+        return render_template("classname.html", _class = __class)
 
 @app.route('/login_form', methods=['POST'])
 def login_form():

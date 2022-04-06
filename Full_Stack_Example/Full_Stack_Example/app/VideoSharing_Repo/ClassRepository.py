@@ -12,7 +12,7 @@ class ClassRepository:
             host="postgres",
             database="SSUVideoSharing",
             user="postgres-user",
-            password="postgres-passwords")
+            password="postgres-password")
 
         try:
             stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassId = '"+id+"';"
