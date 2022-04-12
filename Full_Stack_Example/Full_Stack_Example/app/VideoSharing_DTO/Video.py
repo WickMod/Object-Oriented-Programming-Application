@@ -7,7 +7,6 @@ class Video:
     Description: str
     UploaderId: int
     CreateDate: Timestamp
-    LectureDate: int
     ClassId: int
 
     def __init__(self) -> None:

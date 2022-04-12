@@ -16,13 +16,13 @@ class VideoRepository:
             password="postgres-password")
         
         video_id:str = video.VideoId
-        class_id:str = video.ClassID
+        class_id:str = video.ClassId
 
 
         #fill in rest when DTO is done
 
         try:
-            stmt = "SELECT Subject, Content, Description, UploaderId, CreateDate, LectureData FROM Video WHERE VideoID = '"+video_id+"' AND ClassID = '"+class_id+"';"
+            stmt = "SELECT Subject, Content, Description, UploaderId, CreateDate, FROM Video WHERE VideoID = '"+video_id+"' AND ClassID = '"+class_id+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             video = cur.fetchall()
@@ -33,13 +33,12 @@ class VideoRepository:
 
             newVideo = Video()
             newVideo.VideoId = video_id
-            newVideo.ClassID = class_id
+            newVideo.ClassId = class_id
             newVideo.Subject = tempVideo[0]
             newVideo.Content = tempVideo[1]
             newVideo.Description = tempVideo[2]
             newVideo.UploaderId = tempVideo[3]
             newVideo.CreateDate = tempVideo[4]
-            newVideo.LectureDate = tempVideo[5]
 
             
             cur.close()
@@ -58,7 +57,7 @@ class VideoRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT ClassId, Subject, Content, Description, UploaderId, CreateDate, LectureData FROM Video WHERE VideoID = '"+str(id)+"';"
+            stmt = "SELECT ClassId, Subject, Content, Description, UploaderId, CreateDate, FROM Video WHERE VideoID = '"+str(id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             video = cur.fetchall()
@@ -69,13 +68,12 @@ class VideoRepository:
 
             newVideo = Video()
             newVideo.VideoId = id
-            newVideo.ClassID = tempVideo[0]
+            newVideo.ClassId = tempVideo[0]
             newVideo.Subject = tempVideo[1]
             newVideo.Content = tempVideo[2]
             newVideo.Description = tempVideo[3]
             newVideo.UploaderId = tempVideo[4]
             newVideo.CreateDate = tempVideo[5]
-            newVideo.LectureDate = tempVideo[5]
             
             cur.close()
             return newVideo
@@ -108,8 +106,7 @@ class VideoRepository:
                 video.Description = tp[3]
                 video.UploaderId = tp[4]
                 video.CreateDate = tp[5]
-                video.LectureDate = tp[6]
-                video.ClassId = tp[7]
+                video.ClassId = tp[6]
                 video_list.append(video)
             
             cur.close()
@@ -143,8 +140,7 @@ class VideoRepository:
                 video.Description = tp[3]
                 video.UploaderId = tp[4]
                 video.CreateDate = tp[5]
-                video.LectureDate = tp[6]
-                video.ClassId = tp[7]
+                video.ClassId = tp[6]
                 video_list.append(video)
             
             cur.close()
@@ -163,7 +159,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "INSERT INTO Video(VideoName, VideoState, City, Picture) VALUES( '"+video.VideoName+"', '"+video.VideoState+"','"+video.City+"' , '"+video.Picture+"');"
+            stmt = "INSERT INTO Video(VideoId, Subject, Content, Description, UploaderId, CreateDate, ClassId) VALUES( '"+video.VideoId+"', '"+video.Subject+"','"+video.Content+"' , '"+video.Description+"','"+video.UploaderId+"','"+video.CreateDate+"','"+video.ClassId+"');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
