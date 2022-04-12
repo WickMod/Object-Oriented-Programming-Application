@@ -5,10 +5,10 @@ class Video:
     Subject: str
     Content: str
     Description: str
-    Uploader: str
+    UploaderId: int
     CreateDate: Timestamp
-    LectureData: int
+    LectureDate: int
     ClassID: int
 
     def __init__(self) -> None:
-        pass
+        pass    
