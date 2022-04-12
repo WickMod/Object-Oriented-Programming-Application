@@ -8,47 +8,6 @@ class VideoRepository:
     def __init__(self) -> None:
         pass
 
-    def get_video(self, video: Video) -> Video:
-        conn = psycopg2.connect(
-            host="postgres",
-            database="SSUVideoSharing",
-            user="postgres-user",
-            password="postgres-password")
-        
-        video_id:str = video.VideoId
-        class_id:str = video.ClassId
-
-
-        #fill in rest when DTO is done
-
-        try:
-            stmt = "SELECT Subject, Content, Description, UploaderId, CreateDate, FROM Video WHERE VideoID = '"+video_id+"' AND ClassID = '"+class_id+"';"
-            cur = conn.cursor()
-            cur.execute(stmt)
-            video = cur.fetchall()
-            if not cur.rowcount > 0:
-                return None
-
-            tempVideo = video[0]
-
-            newVideo = Video()
-            newVideo.VideoId = video_id
-            newVideo.ClassId = class_id
-            newVideo.Subject = tempVideo[0]
-            newVideo.Content = tempVideo[1]
-            newVideo.Description = tempVideo[2]
-            newVideo.UploaderId = tempVideo[3]
-            newVideo.CreateDate = tempVideo[4]
-
-            
-            cur.close()
-            return newVideo
-
-        except Exception as e:
-            raise e
-        finally:
-            conn.close()
-
     def get_video_from_id(self, id: int) -> Video:
         conn = psycopg2.connect(
             host="postgres",
@@ -151,7 +110,7 @@ class VideoRepository:
         finally:
             conn.close()
 
-    def add_video(self, video: Video) -> bool:
+    def add_video(self, video: Video) -> int:
         conn = psycopg2.connect(
             host = "postgres",
             database= "SSUVideoSharing",
@@ -159,14 +118,53 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "INSERT INTO Video(VideoId, Subject, Content, Description, UploaderId, CreateDate, ClassId) VALUES( '"+video.VideoId+"', '"+video.Subject+"','"+video.Content+"' , '"+video.Description+"','"+video.UploaderId+"','"+video.CreateDate+"','"+video.ClassId+"');"
+            stmt = "INSERT INTO Video(VideoId, Subject, Content, Description, UploaderId, CreateDate, ClassId) VALUES( '"+video.VideoId+"', '"+video.Subject+"','"+video.Content+"' , '"+video.Description+"','"+video.UploaderId+"','"+video.CreateDate+"','"+video.ClassId+"') RETURNING VideoId;"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
-            rowcount = cur.rowcount
+            insert_id = cur.fetchone()[0]            
+
+            cur.close()
+            return insert_id
+
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        
+    
+    def get_video(self, video: Video) -> Video:
+        conn = psycopg2.connect(
+            host="postgres",
+            database="SSUVideoSharing",
+            user="postgres-user",
+            password="postgres-password")
+        
+        video_id:str = video.VideoId
+        class_id:str = video.ClassId
+
+        try:
+            stmt = "SELECT Subject, Content, Description, UploaderId, CreateDate, FROM Video WHERE VideoID = '"+video_id+"' AND ClassID = '"+class_id+"';"
+            cur = conn.cursor()
+            cur.execute(stmt)
+            video = cur.fetchall()
+            if not cur.rowcount > 0:
+                return None
+
+            tempVideo = video[0]
+
+            newVideo = Video()
+            newVideo.VideoId = video_id
+            newVideo.ClassId = class_id
+            newVideo.Subject = tempVideo[0]
+            newVideo.Content = tempVideo[1]
+            newVideo.Description = tempVideo[2]
+            newVideo.UploaderId = tempVideo[3]
+            newVideo.CreateDate = tempVideo[4]
+
             
             cur.close()
-            return rowcount > 0
+            return newVideo
 
         except Exception as e:
             raise e
