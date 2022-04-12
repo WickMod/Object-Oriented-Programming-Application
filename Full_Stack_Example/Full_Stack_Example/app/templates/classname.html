@@ -5,6 +5,25 @@
 <h1>{{ _class.Semester }}</h1>
 <h1>{{ _class.ClassYear }}</h1>
 
+<form action="upload_video_form" method="POST" enctype=multipart/form-data>
+    <div class="form-group">
+        <div class="form-group">
+            <label for="class name here">Title:</label>
+            <input type="text" class="form-control" id="videoSubject"  placeholder="videoSubject" name="videoSubject" required>
+        </div>
+        <div class="form-group">
+            <label for="class name here">Description:</label>
+            <input type="text" class="form-control" id="videoDescription"  placeholder="videoDescription" name="videoDescription" required>
+        </div>
+        <div class = "form-group">
+            <label for="video">Upload a video</label>
+            <input type=file name=video required>
+        </div>
+        <input type = "hidden" id = "classId" name = "classId" value = "{{_class.ClassId}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Upload ^</button>
+</form>
+
 <form action="/join_class_form" method = "POST">
     <input type = "hidden" id = "classId" name = "classId" value = "{{ _class.ClassYear }}"></input>
     <button type="submit" class = "btn btn-primary">Register +</button>

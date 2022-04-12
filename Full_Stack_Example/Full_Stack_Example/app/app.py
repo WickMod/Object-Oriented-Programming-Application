@@ -1,6 +1,5 @@
-from operator import truediv
-from re import L, search
 from urllib import request
+from VideoSharing_BL.VideoService import VideoService
 from flask import Flask, render_template, request, session, abort
 
 from VideoSharing_BL.SchoolService import SchoolService
@@ -13,7 +12,9 @@ from VideoSharing_BL.UserService import UserService
 from VideoSharing_DTO.User import User
 from VideoSharing_DTO.School import School
 from VideoSharing_DTO.Class import Class
+from VideoSharing_DTO.Video import Video
 from datetime import datetime
+import base64
 
 
 app = Flask(__name__)
@@ -187,6 +188,39 @@ def search_class_form():
     class_list = class_svc.search_for_classes(search_term, school_id)
     return render_template("schoolname.html", school = _school, classes = class_list)
 
+@app.route('/upload_video_form', methods=['POST'])
+def upload_video_form():
+    #make sure that the user is logged in before
+    #they can upload a video
+    if not is_user_logged_in():
+        return render_template("login.html")
+    else:
+        video_svc = VideoService()
+        user_svc = UserService()
+
+        #user submitted data
+        file = request.files["video"]
+        video_subject = request.form["videoSubject"]
+        video_description = request.form["videoDescription"]
+
+        # userid 
+        user_id = user_svc.get_user(session['username']).UserId
+
+        #hidden values
+        video_class = request.form["classId"]
+        video = Video()
+        
+        #incomplete video object (does not have video id)
+        video.Subject = video_subject
+        #encode into b64 then into a string
+        video.Content = base64.b64encode(file.read()).decode('utf-8')
+        video.Description = video_description
+        video.UploaderId = user_id
+        video.CreateDate = datetime.now()
+        video.ClassId = video_class
+
+        video_id = video_svc.add_video(video)
+        #TODO: Send user to the video page.
 
 #function to redirect to register page
 @app.route('/register')
