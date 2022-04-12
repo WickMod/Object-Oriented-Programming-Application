@@ -35,10 +35,10 @@ class VideoRepository:
             newVideo.VideoId = video_id
             newVideo.ClassID = class_id
             newVideo.Subject = tempVideo[0]
-            newVideo.Content = tempVideo[2]
-            newVideo.Description = tempVideo[3]
-            newVideo.UploaderId = tempVideo[4]
-            newVideo.CreateDate = tempVideo[5]
+            newVideo.Content = tempVideo[1]
+            newVideo.Description = tempVideo[2]
+            newVideo.UploaderId = tempVideo[3]
+            newVideo.CreateDate = tempVideo[4]
             newVideo.LectureDate = tempVideo[5]
 
             
@@ -58,7 +58,7 @@ class VideoRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT Subject, Content, Description, UploaderId, CreateDate, LectureData FROM Video WHERE VideoID = '"+str(id)+"';"
+            stmt = "SELECT ClassId, Subject, Content, Description, UploaderId, CreateDate, LectureData FROM Video WHERE VideoID = '"+str(id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             video = cur.fetchall()
@@ -69,7 +69,7 @@ class VideoRepository:
 
             newVideo = Video()
             newVideo.VideoId = id
-            newVideo.ClassID = class_id
+            newVideo.ClassID = tempVideo[0]
             newVideo.Subject = tempVideo[1]
             newVideo.Content = tempVideo[2]
             newVideo.Description = tempVideo[3]
@@ -93,7 +93,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "SELECT * FROM Video WHERE VideoName LIKE '%"+search_term+"%';"
+            stmt = "SELECT * FROM Video WHERE Subject LIKE '%"+search_term+"%';"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
@@ -103,10 +103,48 @@ class VideoRepository:
             for tp in tuple_list:
                 video = Video()
                 video.VideoId = tp[0]
-                video.VideoName = tp[1]
-                video.VideoState = tp[2]
-                video.City = tp[3]
-                video.Picture = tp[4]
+                video.Subject = tp[1]
+                video.Content = tp[2]
+                video.Description = tp[3]
+                video.UploaderId = tp[4]
+                video.CreateDate = tp[5]
+                video.LectureDate = tp[6]
+                video.ClassId = tp[7]
+                video_list.append(video)
+            
+            cur.close()
+            return video_list
+
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+
+    def find_videos_from_class_id(self, class_id: int) -> list:
+        conn = psycopg2.connect(
+            host = "postgres",
+            database= "SSUVideoSharing",
+            user="postgres-user",
+            password="postgres-password")
+        
+        try:
+            stmt = "SELECT * FROM Video WHERE ClassID = '"+str(class_id)+"';"
+            cur = conn.cursor()
+            cur.execute(stmt)
+            conn.commit()
+            tuple_list = cur.fetchall()
+
+            video_list = []
+            for tp in tuple_list:
+                video = Video()
+                video.VideoId = tp[0]
+                video.Subject = tp[1]
+                video.Content = tp[2]
+                video.Description = tp[3]
+                video.UploaderId = tp[4]
+                video.CreateDate = tp[5]
+                video.LectureDate = tp[6]
+                video.ClassId = tp[7]
                 video_list.append(video)
             
             cur.close()

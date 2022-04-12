@@ -8,7 +8,7 @@ class Video:
     UploaderId: int
     CreateDate: Timestamp
     LectureDate: int
-    ClassID: int
+    ClassId: int
 
     def __init__(self) -> None:
         pass    
