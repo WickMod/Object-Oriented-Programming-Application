@@ -132,6 +132,7 @@ class VideoRepository:
         finally:
             conn.close()
         
+
     
     def get_video(self, video: Video) -> Video:
         conn = psycopg2.connect(
