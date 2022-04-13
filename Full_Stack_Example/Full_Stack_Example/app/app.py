@@ -195,9 +195,15 @@ def search_video_form():
     class_id = request.form["classId"]
     class_svc = ClassService()
     video_svc = VideoService()
-    __class = class_svc.get_class_from_id(school_id)
+    __class = class_svc.get_class_from_id(class_id)
     video_list = video_svc.get_videos_from_class_id(search_term, class_id )
     return render_template("classname.html", _class=__class, videos=video_list)
+
+
+@app.route('/play_video_form', methods=['POST'])
+def play_video_form():
+    video_content = request.form['Content']
+    return render_template("video.html", video = video_content)
 
 
 @app.route('/upload_video_form', methods=['POST'])
@@ -232,8 +238,7 @@ def upload_video_form():
         video.ClassId = video_class
 
         video_id = video_svc.add_video(video)
-        return render_template("video.html", video = video_svc.get_video_from_video_id(video_id))
-        #TODO: Send user to the video page instead.
+        #TODO: Send user to the video page.
 
 #function to redirect to register page
 @app.route('/register')
