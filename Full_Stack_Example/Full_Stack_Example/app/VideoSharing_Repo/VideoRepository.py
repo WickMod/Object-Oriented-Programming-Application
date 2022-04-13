@@ -50,7 +50,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "SELECT * FROM Videos WHERE Subject LIKE '%"+search_term+"%' AND ClassId = '"+str(class_id)+"';"
+            stmt = "SELECT * FROM Videos WHERE VideoSubject LIKE '%"+search_term+"%' AND ClassId = '"+str(class_id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

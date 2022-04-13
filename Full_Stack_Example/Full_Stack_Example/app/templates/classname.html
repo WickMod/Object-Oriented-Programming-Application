@@ -43,7 +43,7 @@
     {% for v in videos %}
         <p>{{v.Subject}} </p>
         <form action="/play_video_form" method = "POST">
-            <input type = "hidden" id = "Content" name = "Content" value = "{{ v.Content }}"></input>
+            <input type = "hidden" id = "Content" name = "Content" value = "{{ v.VideoId}}"></input>
             <button type="submit" class = "btn btn-primary">Watch</button>
         </form>    
     {% endfor %}

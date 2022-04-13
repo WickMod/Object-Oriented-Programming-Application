@@ -9,7 +9,6 @@ from VideoSharing_BL.UserClassMappingService import UCMService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
-from VideoSharing_BL.UserService import VideoService
 from VideoSharing_DTO.User import User
 from VideoSharing_DTO.School import School
 from VideoSharing_DTO.Class import Class
@@ -196,14 +195,15 @@ def search_video_form():
     class_svc = ClassService()
     video_svc = VideoService()
     __class = class_svc.get_class_from_id(class_id)
-    video_list = video_svc.get_videos_from_class_id(search_term, class_id )
+    video_list = video_svc.search_videos(search_term, class_id )
     return render_template("classname.html", _class=__class, videos=video_list)
 
 
 @app.route('/play_video_form', methods=['POST'])
 def play_video_form():
+    video_svc = VideoService()
     video_content = request.form['Content']
-    return render_template("video.html", video = video_content)
+    return render_template("video.html", video = video_svc.get_video_from_video_id(video_content))
 
 
 @app.route('/upload_video_form', methods=['POST'])
@@ -238,7 +238,7 @@ def upload_video_form():
         video.ClassId = video_class
 
         video_id = video_svc.add_video(video)
-        #TODO: Send user to the video page.
+        return render_template("video.html", video = video_svc.get_video_from_video_id(video_id))
 
 #function to redirect to register page
 @app.route('/register')
