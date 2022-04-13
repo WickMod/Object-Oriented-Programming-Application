@@ -50,11 +50,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-<<<<<<< Updated upstream
-            stmt = "SELECT * FROM Videos WHERE VideoSubject LIKE '%"+search_term+"%';"
-=======
-            stmt = "SELECT * FROM Video WHERE Subject LIKE '%"+search_term+"%' AND ClassId== '"+str(class_id)+"';"
->>>>>>> Stashed changes
+            stmt = "SELECT * FROM Videos WHERE Subject LIKE '%"+search_term+"%' AND ClassId = '"+str(class_id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
