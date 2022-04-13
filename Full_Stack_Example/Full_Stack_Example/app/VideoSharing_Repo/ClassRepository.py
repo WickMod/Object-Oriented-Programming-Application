@@ -56,7 +56,7 @@ class ClassRepository:
         class_year:str = _class.ClassYear
 
         try:
-            stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassName = '"+class_name+"' AND ClassCode = '"+class_code+"' AND Section = '"+class_section+"' AND Semester = '"+class_semester+"' AND Teacher = '"+class_teacher+"' AND ClassYear = '"+class_year+"';"
+            stmt = "SELECT ClassId, ClassName, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassName = '"+class_name+"' AND ClassCode = '"+class_code+"' AND Section = '"+class_section+"' AND Semester = '"+class_semester+"' AND Teacher = '"+class_teacher+"' AND ClassYear = '"+class_year+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             _class = cur.fetchall()
@@ -106,6 +106,7 @@ class ClassRepository:
                 _class.Semester = tp[4]
                 _class.Teacher = tp[5]
                 _class.SchoolId = tp[6]
+                _class.ClassYear = tp[7]
                 class_list.append(_class)
             
             cur.close()

@@ -220,7 +220,7 @@ def upload_video_form():
         video.ClassId = video_class
 
         video_id = video_svc.add_video(video)
-        return render_template("index.html")
+        return render_template("video.html", video = video_svc.get_video_from_video_id(video_id))
         #TODO: Send user to the video page instead.
 
 #function to redirect to register page

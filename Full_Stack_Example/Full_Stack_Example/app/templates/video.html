@@ -2,14 +2,14 @@
 {% block body %}
 
 
-<h1>{{video.Subject}} ID {{video.videoId}}</h1>
+<h1>{{video.Subject}} ID {{video.VideoId}}</h1>
 
 <video controls>
     <source type="video/mp4" src="data:video/mp4;base64,{{video.Content}}">
 </video>
 
 <h1>Uploaded by {{video.UploaderId}} at {{video.CreateDate}}</h1>
-<h1>Class {{video.classId}}</h1>
+<h1>Class {{video.ClassId}}</h1>
 
 <p>{{video.Description}}</p>
 

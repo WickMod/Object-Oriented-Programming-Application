@@ -16,7 +16,7 @@ class VideoRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT ClassId, Subject, Content, Description, UploaderId, CreateDate, FROM Video WHERE VideoID = '"+str(id)+"';"
+            stmt = "SELECT ClassId, VideoSubject, Content, VideoDescription, UploadedBY, CreateDateTime FROM Videos WHERE VideoID = '"+str(id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             video = cur.fetchall()
@@ -50,7 +50,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "SELECT * FROM Video WHERE Subject LIKE '%"+search_term+"%';"
+            stmt = "SELECT * FROM Videos WHERE VideoSubject LIKE '%"+search_term+"%';"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
@@ -84,7 +84,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "SELECT * FROM Video WHERE ClassID = '"+str(class_id)+"';"
+            stmt = "SELECT * FROM Videos WHERE ClassID = '"+str(class_id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
@@ -132,42 +132,3 @@ class VideoRepository:
         finally:
             conn.close()
         
-
-    
-    def get_video(self, video: Video) -> Video:
-        conn = psycopg2.connect(
-            host="postgres",
-            database="SSUVideoSharing",
-            user="postgres-user",
-            password="postgres-password")
-        
-        video_id:str = video.VideoId
-        class_id:str = video.ClassId
-
-        try:
-            stmt = "SELECT Subject, Content, Description, UploaderId, CreateDate, FROM Video WHERE VideoID = '"+video_id+"' AND ClassID = '"+class_id+"';"
-            cur = conn.cursor()
-            cur.execute(stmt)
-            video = cur.fetchall()
-            if not cur.rowcount > 0:
-                return None
-
-            tempVideo = video[0]
-
-            newVideo = Video()
-            newVideo.VideoId = video_id
-            newVideo.ClassId = class_id
-            newVideo.Subject = tempVideo[0]
-            newVideo.Content = tempVideo[1]
-            newVideo.Description = tempVideo[2]
-            newVideo.UploaderId = tempVideo[3]
-            newVideo.CreateDate = tempVideo[4]
-
-            
-            cur.close()
-            return newVideo
-
-        except Exception as e:
-            raise e
-        finally:
-            conn.close()
