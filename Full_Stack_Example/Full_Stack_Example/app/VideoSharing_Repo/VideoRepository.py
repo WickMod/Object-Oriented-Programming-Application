@@ -118,7 +118,7 @@ class VideoRepository:
             password="postgres-password")
         
         try:
-            stmt = "INSERT INTO Video(VideoId, Subject, Content, Description, UploaderId, CreateDate, ClassId) VALUES( '"+video.VideoId+"', '"+video.Subject+"','"+video.Content+"' , '"+video.Description+"','"+video.UploaderId+"','"+video.CreateDate+"','"+video.ClassId+"') RETURNING VideoId;"
+            stmt = "INSERT INTO Videos(VideoSubject, Content, VideoDescription, UploadedBY, CreateDateTime, ClassId) VALUES( '"+video.Subject+"','"+video.Content+"' , '"+video.Description+"','"+str(video.UploaderId)+"','"+str(video.CreateDate)+"','"+str(video.ClassId)+"') RETURNING VideoId;"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

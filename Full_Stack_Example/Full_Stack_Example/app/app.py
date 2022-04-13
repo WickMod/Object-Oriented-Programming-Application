@@ -220,7 +220,8 @@ def upload_video_form():
         video.ClassId = video_class
 
         video_id = video_svc.add_video(video)
-        #TODO: Send user to the video page.
+        return render_template("index.html")
+        #TODO: Send user to the video page instead.
 
 #function to redirect to register page
 @app.route('/register')
