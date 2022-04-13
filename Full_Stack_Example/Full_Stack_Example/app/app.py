@@ -9,6 +9,7 @@ from VideoSharing_BL.UserClassMappingService import UCMService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
+from VideoSharing_BL.UserService import VideoService
 from VideoSharing_DTO.User import User
 from VideoSharing_DTO.School import School
 from VideoSharing_DTO.Class import Class
@@ -187,6 +188,17 @@ def search_class_form():
     _school = school_svc.get_school_from_id(school_id)
     class_list = class_svc.search_for_classes(search_term, school_id)
     return render_template("schoolname.html", school = _school, classes = class_list)
+
+@app.route('/search_video_form', methods=['POST'])
+def search_video_form():
+    search_term = request.form["searchContent"]
+    class_id = request.form["classId"]
+    class_svc = ClassService()
+    video_svc = VideoService()
+    __class = class_svc.get_class_from_id(school_id)
+    video_list = video_svc.get_videos_from_class_id(search_term, class_id )
+    return render_template("classname.html", _class=__class, videos=video_list)
+
 
 @app.route('/upload_video_form', methods=['POST'])
 def upload_video_form():

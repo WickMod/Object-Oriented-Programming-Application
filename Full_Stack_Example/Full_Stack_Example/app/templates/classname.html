@@ -29,4 +29,24 @@
     <button type="submit" class = "btn btn-primary">Register +</button>
 </form>
 
+<div>
+    <form action = "/search_video_form" method = "POST">
+        <input type="text" id="searchContent" placeholder="Search for videos..." name = "searchContent" required>
+        <input type = "hidden" id = "classId" name = "classId" value = "{{ _class.ClassId }}"></input>
+        <button type = "submit">
+            Search
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+
+    <h1>Videos</h1>
+    {% for v in videos %}
+        <p>{{v.Subject}} </p>
+        <form action="/play_video_form" method = "POST">
+            <input type = "hidden" id = "Content" name = "Content" value = "{{ v.Content }}"></input>
+            <button type="submit" class = "btn btn-primary">Watch</button>
+        </form>    
+    {% endfor %}
+</div>
+
 {% endblock %}

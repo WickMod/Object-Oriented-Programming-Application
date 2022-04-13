@@ -23,6 +23,7 @@ class VideoService:
         return self.video_repo.get_video_from_id(video_id)
 
     def get_videos_from_class_id(self, class_id: int) -> list:
-        #TODO: Implement this
-        raise NotImplementedError
-    
+        return self.video_repo.find_videos_from_class_id(class_id)
+
+    def search_videos(self, search_term:str, class_id:int) -> list:
+        return self.video_repo.find_videos(search_term, class_id)

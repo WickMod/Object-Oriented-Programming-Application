@@ -42,7 +42,7 @@ class VideoRepository:
         finally:
             conn.close()
 
-    def find_videos(self, search_term: str) -> list:
+    def find_videos(self, search_term: str, class_id: int) -> list:
         conn = psycopg2.connect(
             host = "postgres",
             database= "SSUVideoSharing",
@@ -50,7 +50,11 @@ class VideoRepository:
             password="postgres-password")
         
         try:
+<<<<<<< Updated upstream
             stmt = "SELECT * FROM Videos WHERE VideoSubject LIKE '%"+search_term+"%';"
+=======
+            stmt = "SELECT * FROM Video WHERE Subject LIKE '%"+search_term+"%' AND ClassId== '"+str(class_id)+"';"
+>>>>>>> Stashed changes
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()
