@@ -10,9 +10,9 @@ class UCMService:
     def __init__(self) -> None:
         self.UCM_repo = UCMRepository()
     
-    def get_classs_from_user(self, user: User) -> list:
+    def get_classes_from_user(self, user_id: int) -> list:
         #returns a list of DTOs
-        return self.UCM_repo.get_classs_from_user(user)
+        return self.UCM_repo.get_classes_from_user(user_id)
 
     def get_users_from_class(self, _class: Class) -> list:
         #returns a list of DTOs

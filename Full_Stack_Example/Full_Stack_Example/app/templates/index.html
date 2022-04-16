@@ -1,5 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<div style = "display: flex; flex-direction: row; justify-content: space-evenly;">
+    <div>
+        <h1>Unwatched Videos</h1>
+        {% for v in videos %}
+            <h2>{{v.Subject}}</h2>
+            <form action="/play_video_form" method = "POST">
+                <input type = "hidden" id = "Content" name = "Content" value = "{{ v.VideoId}}"></input>
+                <button type="submit" class = "btn btn-primary">Watch</button>
+            </form>    
+        {% endfor %}
+    </div>
+    <div>
+        <h1>Classes</h1>
+        {% for c in classes %}
+            <a href = "{{url_for('classes')}}">{{c.ClassName}} {{c.Semester}} {{c.ClassYear}}</a>
+        {% endfor %}
+    </div>
+</div>
+
 
 {% endblock %}

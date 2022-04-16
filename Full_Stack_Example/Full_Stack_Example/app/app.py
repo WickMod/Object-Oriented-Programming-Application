@@ -23,15 +23,32 @@ classes = ["login", "register", "create_school", "create_class"]
 
 @app.route('/')
 def index():
-    #classes = ["Foo","Bar","Baz"]
-    
-    app_settings_svc = AppSettingsService()
 
- 
-    return render_template("index.html",
-                            classes=classes,
-                            app_name=app_settings_svc.app_name(),
-                            app_version=app_settings_svc.app_version())
+    if is_user_logged_in():
+        user_svc = UserService()
+        ucm_svc = UCMService()
+        video_svc = VideoService()
+
+        user = user_svc.get_user(session['username'])
+        users_classes = ucm_svc.get_classes_from_user(user.UserId)
+
+        videos = []
+        classes = []
+
+        if users_classes is not None:
+            classes = users_classes
+            all_classes_videos = []
+            for _class in users_classes:
+                _class_videos = video_svc.get_videos_from_class_id(_class.ClassId)
+                all_classes_videos += _class_videos
+            
+            for video in all_classes_videos:
+                if video.CreateDate > user.LastLogin:
+                    videos.append(video)
+        
+        return render_template("index.html", videos = videos, classes = classes)
+    
+    return render_template("index.html", videos = [], classes = [])
 
 @app.route('/create_school_form', methods=['POST'])
 def create_school_form():
@@ -280,7 +297,16 @@ def school(schoolstate:str, schoolcity:str, schoolname:str):
     if _school is None:
         abort(404)
     return render_template("schoolname.html", school = _school)
-    
+
+@app.route('/classes/<class_id>')
+def classes(class_id:str):
+    class_svc = ClassService()
+
+    _class = class_svc.get_class_from_id(class_id)
+    if _class is None:
+        abort(404)
+    return render_template("classname.html", _class = _class)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
