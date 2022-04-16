@@ -15,7 +15,7 @@
     <div>
         <h1>Classes</h1>
         {% for c in classes %}
-            <a href = "{{url_for('classes')}}">{{c.ClassName}} {{c.Semester}} {{c.ClassYear}}</a>
+            <a href = "{{url_for('classes', class_id = c.ClassId)}}">{{c.ClassName}} {{c.Semester}} {{c.ClassYear}}</a>
         {% endfor %}
     </div>
 </div>

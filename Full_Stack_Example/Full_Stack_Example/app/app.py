@@ -298,8 +298,8 @@ def school(schoolstate:str, schoolcity:str, schoolname:str):
         abort(404)
     return render_template("schoolname.html", school = _school)
 
-@app.route('/classes/<class_id>')
-def classes(class_id:str):
+@app.route('/classes/<int:class_id>', methods=['GET', 'POST'])
+def classes(class_id):
     class_svc = ClassService()
 
     _class = class_svc.get_class_from_id(class_id)
