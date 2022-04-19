@@ -9,10 +9,12 @@ from VideoSharing_BL.UserClassMappingService import UCMService
 from VideoSharing_BL.AppSettingsService import AppSettingsService
 import VideoSharing_BL.CredentialVerificationService as CredVer
 from VideoSharing_BL.UserService import UserService
+from VideoSharing_BL.CommentService import CommentService
 from VideoSharing_DTO.User import User
 from VideoSharing_DTO.School import School
 from VideoSharing_DTO.Class import Class
 from VideoSharing_DTO.Video import Video
+from VideoSharing_DTO.Comment import Comment
 from datetime import datetime
 import base64
 
@@ -219,8 +221,11 @@ def search_video_form():
 @app.route('/play_video_form', methods=['POST'])
 def play_video_form():
     video_svc = VideoService()
-    video_content = request.form['Content']
-    return render_template("video.html", video = video_svc.get_video_from_video_id(video_content))
+    comment_svc = CommentService()
+    video_id = request.form['Content']
+    _video = video_svc.get_video_from_video_id(video_id)
+    _comments:list = comment_svc.get_comments_from_video_id(video_id)
+    return render_template("video.html", video = _video, comments=_comments)
 
 
 @app.route('/upload_video_form', methods=['POST'])
@@ -232,6 +237,7 @@ def upload_video_form():
     else:
         video_svc = VideoService()
         user_svc = UserService()
+        comment_svc = CommentService()
 
         #user submitted data
         file = request.files["video"]
@@ -255,7 +261,9 @@ def upload_video_form():
         video.ClassId = video_class
 
         video_id = video_svc.add_video(video)
-        return render_template("video.html", video = video_svc.get_video_from_video_id(video_id))
+
+        _comments:list = comment_svc.get_comments_from_video_id(video_id)
+        return render_template("video.html", video = video_svc.get_video_from_video_id(video_id), comments=_comments)
 
 #function to redirect to register page
 @app.route('/register')
@@ -278,6 +286,30 @@ def create_school():
 @app.route('/create_class')
 def create_class():
     return render_template("create_class.html", classes=classes)
+
+@app.route('/publish_comment', methods=['POST'])
+def publish_comment():
+    if not is_user_logged_in():
+        return render_template("login.html")
+    else:
+        comment_svc = CommentService()
+        user_svc = UserService()
+        video_svc = VideoService()
+        #user submitted data
+        comment_content = request.form["commentContent"]
+        
+        # userid 
+        user_id = user_svc.get_user(session['username']).UserId
+
+        video_id = request.form["VideoId"]
+        
+        comment_svc.register_comment(comment_content, video_id, user_id)
+
+        _comments:list = comment_svc.get_comments_from_video_id(video_id)
+
+        return render_template("video.html", video = video_svc.get_video_from_video_id(video_id), comments=_comments)
+
+
 
 def is_user_logged_in() -> bool:
     if 'username' in session:
