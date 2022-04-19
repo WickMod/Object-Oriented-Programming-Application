@@ -15,7 +15,7 @@ class ClassRepository:
             password="postgres-password")
 
         try:
-            stmt = "SELECT ClassId, ClassName, ClassCode, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassId = '"+str(id)+"';"
+            stmt = "SELECT ClassId, ClassName, ClassCode, Section, Semester, Teacher, SchoolId, ClassYear FROM Classes WHERE ClassId = '"+str(id)+"';"
             cur = conn.cursor()
             cur.execute(stmt)
             _class = cur.fetchall()

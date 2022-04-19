@@ -28,7 +28,7 @@ class CommentRepository:
                 newComment.CommentId = tp[0]
                 newComment.Content = tp[1]
                 newComment.VideoId = tp[2]
-                newComment.UserId = tp[3]
+                newComment.Username = tp[3]
 
                 comment_list.append(newComment)
 
@@ -50,7 +50,7 @@ class CommentRepository:
             password="postgres-password")
 
         try:
-            stmt = "INSERT INTO Comments(Content, VideoId, UserId) VALUES( '"+comment.Content+"', '"+str(comment.VideoId)+"','"+str(comment.UserId)+"');"
+            stmt = "INSERT INTO Comments(Content, VideoId, Username) VALUES( '"+comment.Content+"', '"+str(comment.VideoId)+"','"+comment.Username+"');"
             cur = conn.cursor()
             cur.execute(stmt)
             conn.commit()

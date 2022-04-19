@@ -16,12 +16,17 @@ class CommentService:
     def __init__(self) -> None:
         self.comment_repo = CommentRepository()
 
-    def register_comment(self, text: str, video_id:int, user_id:int) -> bool:
+    def register_comment(self, text: str, video_id:int, username:str) -> bool:
         new_comment = Comment()
         new_comment.Content = text
         new_comment.VideoId = video_id
-        new_comment.UserId = user_id
+        new_comment.Username = username
         return self.comment_repo.add_comment(new_comment)
 
     def get_comments_from_video_id(self, video_id:int) -> list:
-        return self.comment_repo.get_comments_from_video_id(video_id)
+        returned_value = self.comment_repo.get_comments_from_video_id(video_id)
+
+        if returned_value is not None:
+            return returned_value
+        else:
+            return []

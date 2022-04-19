@@ -287,8 +287,8 @@ def create_school():
 def create_class():
     return render_template("create_class.html", classes=classes)
 
-@app.route('/publish_comment', methods=['POST'])
-def publish_comment():
+@app.route('/publish_comment_form', methods=['POST'])
+def publish_comment_form():
     if not is_user_logged_in():
         return render_template("login.html")
     else:
@@ -298,12 +298,9 @@ def publish_comment():
         #user submitted data
         comment_content = request.form["commentContent"]
         
-        # userid 
-        user_id = user_svc.get_user(session['username']).UserId
-
         video_id = request.form["VideoId"]
         
-        comment_svc.register_comment(comment_content, video_id, user_id)
+        comment_svc.register_comment(comment_content, video_id, session['username'])
 
         _comments:list = comment_svc.get_comments_from_video_id(video_id)
 

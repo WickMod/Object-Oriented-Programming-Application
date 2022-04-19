@@ -4,7 +4,7 @@ CREATE TABLE UserSchoolMapping(UniqueId SERIAL PRIMARY KEY, UserId INT, SchoolId
 CREATE TABLE UserClassMapping(UniqueId SERIAL PRIMARY KEY, UserId INT, ClassId INT);
 CREATE TABLE School(SchoolId SERIAL PRIMARY KEY, SchoolName TEXT, SchoolState TEXT, City TEXT, Picture TEXT);
 CREATE TABLE Videos(VideoId SERIAL PRIMARY KEY, VideoSubject TEXT, Content TEXT, VideoDescription TEXT, UploadedBY INT, CreateDatetime TIMESTAMP, ClassId INT);
-CREATE TABLE Comments(CommentId SERIAL PRIMARY KEY, Content TEXT, VideoId INT, UserId INT);
+CREATE TABLE Comments(CommentId SERIAL PRIMARY KEY, Content TEXT, VideoId INT, Username TEXT);
 CREATE TABLE Users(UserId SERIAL PRIMARY KEY, Username TEXT, pwd TEXT, LastLogin TIMESTAMP);
 
 INSERT INTO ApplicationSettings(app_key,app_value) VALUES ('ApplicationName', 'SSU Video Sharing');

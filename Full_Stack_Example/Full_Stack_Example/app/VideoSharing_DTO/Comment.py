@@ -2,7 +2,7 @@ class Comment:
     CommentId: int
     Content: str
     VideoId: int
-    UserId: int
+    Username: str
 
     def __init__(self) -> None:
         pass

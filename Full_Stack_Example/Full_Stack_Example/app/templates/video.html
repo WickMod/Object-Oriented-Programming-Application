@@ -15,7 +15,7 @@
 
 <form action = "/publish_comment_form" method = "POST">
     <input type="text" id="commentContent" placeholder="Type comment here..." name = "commentContent" required>
-    <input type = "hidden" id = "videoId" name = "videoId" value = "{{ video.VideoId }}"></input>
+    <input type = "hidden" id = "VideoId" name = "VideoId" value = "{{ video.VideoId }}"></input>
     <button type = "submit">
         Type Comment
     </button>
@@ -23,7 +23,7 @@
 
 <h1>Comments</h1>
 {% for c in comments %}
-    <p>{{c.UploaderId}} {{c.Content}}</p>
+    <p>{{c.Username}} {{c.Content}}</p>
 {% endfor %}
 
 {% endblock %}
